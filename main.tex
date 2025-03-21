@@ -1,0 +1,165 @@
+\documentclass[12pt]{article}
+
+% PACKAGES:
+
+\usepackage[utf8]{inputenc}
+\usepackage{cite}
+\usepackage[english]{babel}
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm,footnotesep=3.5cm]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{svg}
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+\usepackage{amssymb} 
+\usepackage{newtxtext}
+\usepackage{lmodern}
+\usepackage{float}
+\usepackage[final]{pdfpages}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+
+% SETTINGS
+
+\setlength{\parindent}{1.5cm}
+\captionsetup{font={footnotesize,it}}
+
+
+\title{
+
+\Large{MEng Mechanical Engineering}\\
+\vspace{30pt}
+    \Huge{\textbf{Developing an Open-Source Frequency Domain Modal Analysis Algorithm in Python}} \\
+    \vspace{30pt}
+}
+
+\author{
+        \Large{Adam AWADALLA} \\
+        \vspace{50pt}
+}
+
+\date{
+        \Large{May 2025} \\
+        \vspace{50pt}
+        \Large{Timothy J. Rogers} \\
+        \vspace{50pt}
+        \Large{Report submitted to the University of Sheffield in partial fulfillment of the       
+        requirements for the degree of Master of Engineering}\\
+        \vspace{10pt}
+        Word Count: 8001
+      }
+
+    
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+
+
+% MSVS light theme as it's like the standard for coding I guess ¯\_(ツ)_/¯
+
+
+\definecolor{keyword}{RGB}{0,0,255}      % Blue for keywords
+\definecolor{string}{RGB}{163,21,21}    % Red for strings
+\definecolor{comment}{RGB}{0,128,0}     % Green for comments
+\definecolor{identifier}{RGB}{0,0,0}    % Black for identifiers
+\definecolor{background}{RGB}{255,255,255} % White background
+\definecolor{numbering}{RGB}{111,111,111} % Gray for line numbers
+
+% Python code listings
+
+\lstdefinestyle{Python}{
+    language=Python,
+    basicstyle=\ttfamily\small,              % Font size and family
+    keywordstyle=\color{keyword}\bfseries,  % Keywords in blue and bold
+    stringstyle=\color{string},             % Strings in red
+    commentstyle=\color{comment}\itshape,   % Comments in green and italic
+    identifierstyle=\color{identifier},     % Identifiers in black
+    backgroundcolor=\color{background},     % White background
+    numberstyle=\tiny\color{numbering},     % Gray line numbers
+    numbers=left,
+    stepnumber=1,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,                           % Frame around the code
+}
+
+\definecolor{githubBg}{RGB}{13,17,23}      % background: 0D1117
+\definecolor{githubText}{RGB}{201,209,217}   % text: C9D1D9
+\definecolor{githubComment}{RGB}{139,148,158} % comment: 8B949E
+\definecolor{githubKeyword}{RGB}{255,128,0}
+\definecolor{githubString}{RGB}{165,214,255}  % string: A5D6FF
+\definecolor{githubFrame}{RGB}{48,54,61}       % frame: 30363D
+
+\lstdefinelanguage{Python}{
+  language=Python,
+  morekeywords={def, class, import, from, as, if, else, elif, for, while, return, print},
+  sensitive=true,
+  comment=[l]\#,
+  string=[b]",
+  string=[b]'
+}
+
+\lstdefinestyle{github-dark}{
+  language=Python,
+  backgroundcolor=\color{githubBg},
+  basicstyle=\ttfamily\footnotesize\color{githubText},
+  commentstyle=\color{githubComment}\itshape,
+  keywordstyle=\color{githubKeyword}\bfseries,
+  stringstyle=\color{githubString},
+  identifierstyle=\color{githubText},
+  frame=single,
+  rulecolor=\color{githubFrame},
+  numbers=left,
+  numberstyle=\tiny\color{githubFrame},
+  showstringspaces=false,
+  breaklines=true,
+  captionpos=b,
+  tabsize=2,
+}
+
+
+\begin{document}
+\numberwithin{lstlisting}{section}
+
+\pagenumbering{gobble}
+\setcounter{page}{1}
+\pagestyle{plain}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/unilogoplusmecheng.png}
+\end{figure}
+\maketitle
+\pagebreak
+\tableofcontents
+
+\pagebreak
+\input{Pre_text_bodies.tex}
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagebreak
+\input{text_body.tex}
+
+\pagebreak
+\input{Post_text_bodies.tex}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

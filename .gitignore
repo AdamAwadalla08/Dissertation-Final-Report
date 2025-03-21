@@ -1,0 +1,10 @@
+*.log
+*.aux
+*.out
+*.pdf
+!main.pdf
+*.synctex.gz
+Figures/
+*.toc
+.vscode/
+*.bbl

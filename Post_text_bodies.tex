@@ -1,0 +1,223 @@
+\appendix
+
+\section{Derivation of p-LSCF modal parameter estimation method}
+\subsection{The right-matrix rational fractional model}
+The polyreference least-squares complex frequency domain method employs a right matrix fractional model to fit MIMO Frequency Response Function measurements into a set of rational polynomial transfer functions:
+\begin{equation}\label{eq:plscf_poly}
+    [H(\omega)] = [N(\omega)][D(\omega)]^{-1}
+\end{equation}
+Such that $H(\omega) \in\mathbb{C}^{N_{outputs} \times N_{inputs}} $ is the FRF matrix, where $D(\omega)\in \mathbb{C}^{N_{inputs} \times N_{inputs}}$, is the denominator matrix polynomial, and $N(\omega) \in \mathbb{C}^{N_{outputs} \times N_{inputs}}$, is the numerator matrix polynomial. The rows corresponding to each output $o$ in the FRF matrix can be represented as such:
+
+\begin{equation}\label{eq:plscf_frf_row}
+    \left \langle H_o(\omega) \right \rangle = \left \langle N_o(\omega) \right \rangle [D(\omega)]^{-1}
+\end{equation}
+
+The row vector numerator polynomial for the $o^{th}$ output, and the denominator matrix polynomial are defined in terms of a polynomial basis function, $\Omega(\omega)$, and their respective polynomial coefficients, $\beta$ and $\alpha$ as such:
+
+\begin{equation}\label{eq:num_poly}
+    \left \langle N_o(\omega) \right \rangle  = \sum_{r=1}^{p} \Omega_r(\omega) \left \langle \beta_{or}(\omega) \right \rangle
+\end{equation}
+\begin{equation}\label{eq:den_poly}
+    [D(\omega)] = \sum_{r=1}^{p} \Omega_r(\omega)[\alpha_r]
+\end{equation}
+With the polynomial basis function $\Omega_r(\omega) = e^{j\omega\Delta tr}$. Although not initially obvious as polynomials with conventional form $p(x) = c_0 +c_1x +c_2x^2 +\dots + c_nx^n$, the basis functions are expressed in the $s$-domain where $s = e^{j\omega\Delta t}$. The polynomial coefficients, $\alpha_r \in \mathbb{R}^{N_{inputs}\times N_{inputs}}$ and $\beta_{or} \in \mathbb{R}^{1 \times N_{inputs}}$, are assembled into matrix form:
+
+\begin{flalign}\label{eq:beta}
+    \beta_o = \begin{pmatrix}
+        \beta_{o0}\\
+        \beta_{o1}\\
+        \beta_{o2}\\
+        \dots\\
+        \beta_{op}
+    \end{pmatrix}
+    \in \mathbb{R}^{(p+1)\times N_{inputs}} &&
+\end{flalign}
+
+
+\begin{flalign}\label{eq:alpha}
+    \alpha = \begin{pmatrix}
+        \alpha_0\\
+        \alpha_1\\
+        \alpha_2\\
+        \dots\\
+        \alpha_p
+    \end{pmatrix}
+    \in \mathbb{R}^{N_{inputs}*(p+1)\times N_{inputs}} &&
+\end{flalign}
+
+\begin{flalign}\label{eq:theta}
+    \theta = \begin{pmatrix}
+        \beta_0\\
+        \beta_1\\
+        \beta_2\\
+        \dots\\
+        \beta_{N_{o}}\\
+        \alpha
+    \end{pmatrix} \in \mathbb{R}^{(N_{outputs}+N_{inputs})(p+1)\times N_{inputs}} &&
+\end{flalign}
+\subsection{Minimizing the sum of the squared residuals}
+The collection of both sets of coefficients into one variable $\theta$, makes performing the least squares problem simpler, in a sense, as it becomes the one unknown in this least squares model. As typical in any fitting method, one must minimize the error between the model and the real or measured value. The nonlinear least-squares error for:\\
+Measured FRF:\hspace{30pt} $\hat{H}_o(\omega_k)$\\
+Model FRF: \hspace{42pt} $H_o(\omega_k)$\\
+is weighted such that:
+\begin{equation}\label{eq:nls_error}
+    \epsilon_{o}^{NLS} (\theta,\omega_k) = w_o(\omega_k)(H_o(\omega_k)-\hat{H}_o(\omega_k))
+\end{equation}
+Where $\epsilon_{o}^{NLS} \in \mathbb{C}^{1\times N_{inputs}}$,   $w_o(\omega_k)$ is a scalar weighing function which captures the variation and deviation between multiple inputs on the same measurement point, and $\forall k = 0, 1, 2, \dots , N_{frequency}$. Said weighing function is typically denoted by
+\begin{equation}\label{eq:weighing_fn}
+    w_o(\omega_k) = \frac{1}{\sqrt{\mathbf{var}[H_o(\omega_k)]}}
+\end{equation}
+(See [reference for weighted linear regressions] for more information on weighted least squares.)\\
+One can then define the nonlinear cost function as the sum of the error "squared", (hermitian inner product), over the data points, in this case, spectral lines and outputs;
+\begin{equation} \label{eq:nls_cost_fn}
+    l^{NLS}(\theta) = \sum_{o=1}^{N_{out}}\sum_{k=1}^{N_f}\mathbf{tr}\{(\epsilon_{o}^{NLS} (\theta,\omega_k))^H \epsilon_{o}^{NLS} (\theta,\omega_k)  \}
+\end{equation}
+In this equation, $\mathbf{tr}\{\bullet\}$ denotes the trace of a matrix, also known as the sum of diagonal elements, and $\bullet^H$ denotes the Hermitian (conjugate) transpose. The trace operator is used as the trace of a product of 2 matrices $\mathbf{A}\in \mathbb{C}^{m\times n}$ and $\mathbf{B}\in \mathbb{C}^{m\times n}$ will equal the sum of each individual element in $\mathbf{A}$ with the individual elements of $\mathbf{B}$. This provides a sum of all square residuals/errors in the cost function.
+\begin{equation}\label{eq:tr_cyc_prop}
+    \mathbf{tr}\{\mathbf{A}^H\mathbf{B}\} = \mathbf{tr}\{\mathbf{A}\mathbf{B}^H\} = \mathbf{tr}\{\mathbf{B}^H\mathbf{A}\} =\mathbf{tr}\{\mathbf{B}\mathbf{A}^H\} = \sum_{i=1}^{m}\sum_{j=1}^{n}a_{ij}b_{ij}
+\end{equation}
+\subsection{Linearizing the error}
+One can then obtain the polynomial coefficients through minimizing the cost function in \ref{eq:nls_cost_fn}, by setting the derivative $\frac{\partial l^{NLS}}{\partial \theta}$ equal to zero, however a nonlinear cost function will yield nonlinear derivative equations, (typically called normal equations in linear regression). A subsequent linearization of the cost function can approximate (suboptimally) the least squares problem, this is achieved through right multiplying the cost function with denominator polynomial $\mathbf{D}$. This gives a linear error:
+\begin{equation}\label{eq:lin_error}
+    \begin{aligned}
+        \epsilon^{LS}_o(\omega_k,\theta)  & = w_o(\omega_k) (N_o(\omega_k,\beta_o)-\hat{H}_o(\omega_k)D(\omega_k,\alpha))\\
+        & = w_o(\omega_k)  \sum_{r=0}^{p}(\Omega_r(\omega_k)\beta_{or}-\Omega_r(\omega_k)\hat{H}_o(\omega_k)\alpha_r)
+    \end{aligned}
+\end{equation}
+Stacking the error in terms for all spectral lines in one matrix $E^{LS}_o(\theta) \in \mathbb{C}^{N_f \times N_in}$:
+\begin{equation}\label{eq:stacked_error}
+    E^{LS}_o(\theta) = \begin{pmatrix}
+        \epsilon^{LS}_o(\omega_1,\theta)\\
+        \epsilon^{LS}_o(\omega_2,\theta)\\
+        \epsilon^{LS}_o(\omega_3,\theta)\\
+        \dots\\
+        \epsilon^{LS}_o(\omega_{N_f},\theta)
+    \end{pmatrix}
+    = \begin{pmatrix}
+        X_o & Y_o
+    \end{pmatrix}
+    \begin{pmatrix}
+        \beta_o\\
+        \alpha
+    \end{pmatrix}
+\end{equation}
+
+Here, new variables $\mathbf{X}$ and $\mathbf{Y}$ are introduced:
+\begin{equation}\label{eq:X}
+    X_o = \begin{pmatrix}
+        w_{o}(\omega_{1})\Bigl(\Omega_{0}(\omega_{1}) + \Omega_{1}(\omega_{1}) \dots \Omega_{p}(\omega_{1})\Bigr) \\
+        w_{o}(\omega_{2})\Bigl(\Omega_{0}(\omega_{2}) + \Omega_{1}(\omega_{2}) \dots \Omega_{p}(\omega_{2})\Bigr) \\
+        \vdots \\
+        w_{o}(\omega_{N_{f}})\Bigl(\Omega_{0}(\omega_{N_{f}}) + \Omega_{1}(\omega_{N_{f}}) \dots \Omega_{p}(\omega_{N_{f}})\Bigr)
+        \end{pmatrix}
+        \in \mathbb{C}^{N_f \times (p+1)}
+\end{equation}
+\begin{equation}\label{eq:Y}
+    Y_o = \begin{pmatrix}
+        -w_{o}(\omega_{1})\Bigl(\Omega_{0}(\omega_{1}) + \Omega_{1}(\omega_{1}) \dots \Omega_{p}(\omega_{1})\Bigr) \otimes \hat{H}_o(\omega_1) \\ 
+        -w_{o}(\omega_{2})\Bigl(\Omega_{0}(\omega_{2}) + \Omega_{1}(\omega_{2}) \dots \Omega_{p}(\omega_{2})\Bigr)\otimes \hat{H}_o(\omega_2)  \\
+        \vdots \\
+        -w_{o}(\omega_{N_{f}})\Bigl(\Omega_{0}(\omega_{N_{f}}) + \Omega_{1}(\omega_{N_{f}}) \dots \Omega_{p}(\omega_{N_{f}})\Bigr) \otimes \hat{H}_o(\omega_{N_f}) 
+        \end{pmatrix}
+        \in \mathbb{C}^{N_f \times N_{in}(p+1)}
+\end{equation}
+Where $\otimes$ is the Kronecker product. In these equations, $\mathbf{X}$ is used to capture the frequency content of the least squares problem, and $\mathbf{Y}$ is used to capture both the frequency content and the measured response data. Using these matrices, one can reconstruct the nonlinear cost function into one that is linear:
+\begin{equation}
+    \begin{aligned}\label{eq:lin_cost_fn}
+        l^{LS}(\theta) & = \sum_{o=1}^{N_{out}}\sum_{k=1}^{N_{f}}\mathbf{tr}\{(\epsilon^{LS}_o(\omega_k,\theta))^H \epsilon^{LS}_o(\omega_k,\theta) \}\\
+        & = \sum_{o=1}^{N_{out}}\mathbf{tr}\biggl\{(E^{LS}_o(\theta))^H E^{LS}_o(\theta) \biggr\}\\
+        & = \sum_{o=1}^{N_{out}}\mathbf{tr} \Biggl\{\begin{pmatrix}
+            \beta^{T}_o & \alpha^{T}
+        \end{pmatrix}
+        \begin{pmatrix}
+            X^{H}_o\\Y^{H}_o
+        \end{pmatrix}
+        \begin{pmatrix}
+            X_o&Y_o
+        \end{pmatrix}
+        \begin{pmatrix}
+            \beta_o \\ \alpha
+        \end{pmatrix}\Biggr\}
+    \end{aligned}
+\end{equation}
+If one defines a \textit{Jacobian} matrix $\mathbf{J}\in \mathbb{C}^{N_f N_{out}\times (N_{in}+N_out)(p+1)}$ for the problem as such:
+\begin{equation}\label{eq:jacobian}
+\mathbf{J} = \begin{pmatrix}
+    X_1 & 0 & \dots & 0 & Y_1\\
+    0 & X_2 & \dots & 0 & Y_2\\
+    \dots & \dots & \dots & \dots & \dots\\
+    0 & 0 & 0 & X_{N_{out}} & Y_{N_{out}}
+\end{pmatrix}
+\end{equation}
+The cost function can be represented as:
+\begin{equation}\label{eq:cost_fn_simp}
+    l^{LS}(\theta) = \mathbf{tr}\{\theta^T \mathbf{J}^H \mathbf{J} \theta \}
+\end{equation}
+To obtain real values of $\theta$, one must place a constraint on the cost function such that:
+\begin{equation}\label{eq:cost_fn_simp_real}
+    l^{LS}(\theta) = \mathbf{tr}\{\theta^T \mathit{Re}(\mathbf{J}^H \mathbf{J}) \theta \}
+\end{equation}
+Where the Gramian matrix of $\mathbf{J}$ can be represented in terms a set of variables, $\mathbf{R}$,$\mathbf{S}$ and $\mathbf{T}$:
+\begin{equation}
+    \mathit{Re}(\mathbf{J}^H\mathbf{J}) = \begin{pmatrix}
+        R_1 & 0 & \dots & 0 & S_1\\
+        0& 0 & \dots & 0 & S_2\\
+        \dots & \dots & \dots & \dots & \dots\\
+        0 & 0 & \dots & R_{N_{out}} & S_{N_{out}}\\
+        S^{T}_1 & S^{T}_2 &\dots &S^{T}_{N_{out}} &\sum_{o=1}^{N_{out}}T_o
+    \end{pmatrix}
+\end{equation}
+in which:
+\begin{equation}
+    R_o = \mathit{Re}(X^{H}_o X_o)
+\end{equation}
+\begin{equation}
+    S_o =\mathit{Re}(X^{H}_o Y_o)
+\end{equation}
+\begin{equation}
+    T_o = \mathit{Re}(Y^{H}_o Y_o)
+\end{equation}
+The cost function can then be minimized in terms of $\alpha$ and $\beta$ to find the best least-squares fit:
+\begin{equation}
+    \begin{aligned}
+        \frac{\partial l^{LS}(\theta)}{\partial\beta_o} = 2(R_o \beta_o +S_o\alpha) &= 0 \\
+         & \forall O = 1,2,\dots,N_{out}   
+    \end{aligned}
+\end{equation}
+\begin{equation}
+    \frac{\partial l^{LS}(\theta)}{\partial\alpha} = 2\sum_{o=1}^{N_{out}}(S^{T}_o\beta_o +T_o \alpha)
+\end{equation}
+Giving normal equations of this least squares problem in terms of the wanted polynomial coefficients, one can also assemble those normal equations into 1 equation:
+\begin{equation}
+    \frac{\partial l^{LS}(\theta)}{\partial\theta} = 2\mathit{Re}(\mathbf{J}^H\mathbf{J})\theta = 0
+\end{equation}
+The denominator coefficients $\alpha$ are used to obtain the poles and the modal participation factors, which are sufficient information for the constructing a stabilization diagram. Hence, one can further reduce the normal equations by setting:
+\begin{equation}
+    \beta_o = R^{-1}_oS_o\alpha
+\end{equation}
+This yields the reduced normal equation:
+\begin{equation}\label{eq:reduced_normal_eqn}
+    \begin{aligned}
+        \Biggl\{2\sum_{o=1}^{N_{out}}(T_o - S^{T}_oR^{-1}_oS_o)\Biggr\}\alpha &= 0\\
+        \mathbf{M}\alpha & = 0 
+    \end{aligned}
+\end{equation}
+For a non-trivial solution to the normal equation, a constraint is set on $\alpha$, where:
+\begin{equation}
+    \alpha_p = \mathbf{I}_{N_{in}}
+\end{equation}
+The rest of the denominator coefficients are then found using:
+\begin{equation}
+    \mathbf{M}(1:N_{in}*p,1:N_{in}*p)\begin{pmatrix}
+        \alpha_0\\ \alpha_1 \\ \alpha_2 \\ \dots \\ \alpha_{p-1}
+    \end{pmatrix}
+    = \mathbf{M}(1:N_{in}*p,N_{in}*p + 1 : N_{in}*(p+1))
+\end{equation}
+The least-squares estimate for $\alpha$ is then:
+\begin{equation*}
+    \hat{\alpha}_{LS} = \begin{Bmatrix}
+        \alpha\\ \mathbf{I}_{N_{in}}
+    \end{Bmatrix}
+\end{equation*}
+
+This makes the denominator polynomial $\mathbf{D}$ a \emph{monic} polynomial. When fitting theoretical models to experimental data, the difficulty does not typically lie in the mathematical framework enabling the modelling process. Instead, the challenge is in constructing a model that provides physically meaningful insights. Given that the goal of many modal parameter estimation methods is to find a set of poles which As apparent, it is straightforward to find the polynomial coefficients using measured data. 

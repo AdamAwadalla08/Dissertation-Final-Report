@@ -1,0 +1,169 @@
+\section{Introduction}
+
+
+\subsection{Modal Analysis}
+
+Report Story:\\
+\textbf{Structural Dynamics in engineering}
+\begin{itemize}
+    \item How studying structural mechanics has helped us have safer, lighter, greener structures.
+    \item Modal Analysis, is regarded as \textbf{the} solution for linear structural dynamics.
+    \item Maths of modal analysis:
+    \begin{itemize}
+        \item EOM formulation.
+        \item Eigendecomposition of state matrices.
+        \item FRF in modal terms. (refer to plscf solution using that)
+    \end{itemize}
+    \item This is in various industries, home appliances, aero, civil/structural, acoustics etc.
+    \item Experimental Modal Analysis king.
+    \item Curve-fitting methods for modal analysis.
+    \item The need for algorithms in practice.
+\end{itemize}
+
+Onto software usage in engineering contexts
+\begin{itemize}
+    \item engineers consistently rely on software tools, this is great as it streamlines the important processes.
+    \item Important aspects of software dev. :
+    \begin{itemize}
+        \item logic/control flow
+        \item complexities and big O notation
+        \item unit testing and integration testing.
+        \item version control.
+        \item foss vs. prop. discuss why it's cheaper in long run, and better for everyone involved.
+    \end{itemize}
+    \item Revisit the aims and objectives.
+\end{itemize}
+
+\section{Algorithms / development:}
+\textbf{maths-y bit}
+\begin{itemize}
+    \item lsce (brief)
+    \item lscf (brief)
+    \item plscf (important bits and refer to appendix for full derivation, use own notation and wording).
+    \item Why the companion matrix solution works. $\mathbf{eig}(C(p)) = \lambda_i \rightarrow p(\lambda) = 0$
+    \item here one must explain what poles are for a system.
+    \item lsfd for modeshapes.
+\end{itemize}
+
+\textbf{software-y bit}
+\begin{itemize}
+    \item time complexity optimization. discuss that O notation doesn't always equal less time.
+    \item unit testing, explain pytest stuff and fixturing and bla bla bla.
+    \item using numpy (BLAS routines/subroutines)
+    \item user facing code.
+    \item formatting guidelines.
+\end{itemize}
+
+
+
+\section{Results}
+
+\begin{itemize}
+    \item plscf on simulated modal data.
+    \begin{itemize}
+        \item clean
+        \item noisy
+        \item slightly nonlinear data (mimo where $H_{ij} \approx H_{ji}$ but $H_{ij} \neq H_{ji}$)
+        \item high dofs.
+    \end{itemize}
+    \item plscf on actual lab data.
+    \item adam's plscf vs siemens lms polymax on same dataset.
+    \item interpretation of stabilization diagram.
+\end{itemize}
+
+
+\begin{lstlisting}[style={Python}]
+import numpy as np
+
+def _make_polynomial_basis_fcn(
+    polynomial_order: int, frequency_vector: np.ndarray, sampling_frequency: float
+):
+    """Function that creates a Polynomial Basis Function matrix
+
+    Args:
+        polynomial_order (int): Order of the polynomial created. i.e. if 2 then P(x) = a0 * x^0  +  a1 * x^1 + a2 * x^2
+        in the case of pLSCF, Omega(w) = P(e^{jw _delta t})
+
+        frequency_vector (np.ndarray): vector of frequencies measured or simulated, can be hz or rads-1.
+        MUST be either a row or column vector/1D Array
+
+    Returns:
+        Polynomial basis function matrix.
+    """
+    # the polynomial basis function is actually the vandermonde matrix for the polynomials, A and B.
+    dt = 1 / sampling_frequency  # Sampling rate
+    s = np.exp(1.j*frequency_vector*dt) # this is the "x" in the polynomial
+    return np.vander(x=s,N=polynomial_order+1,increasing=True)    
+\end{lstlisting}
+
+\pagebreak
+
+
+
+
+
+Consider the Jacobian matrix, for a system with $n_{outputs} = 3$:
+\begin{equation}
+    J = \begin{pmatrix}
+        X_1 & 0 & 0 & Y_1\\
+        0 & X_2& 0 & Y_2\\
+        0 & 0 & X_3 & Y_3
+    \end{pmatrix}    
+\end{equation}
+
+\begin{equation}
+    J^HJ = \begin{pmatrix}
+        X_{1}^HX_1 & 0 & 0 & X_{1}^HY_1\\
+        0 & X_{2}^HX_2 & 0 & X_{1}^HY_2\\
+        0 & 0 & X_{2}^HX_2 & X_{1}^HY_3\\
+        X_{1}^*Y_{1}^T & X_{2}^*Y_{2}^T & X_{3}^*Y_{3}^T & Y_{1}^HY_1+Y_{2}^HY_2+Y_{3}^HY_3\\
+    \end{pmatrix}
+\end{equation}
+if:
+$$    R_o = Re(X_{o}^HX_o) $$
+$$    S_o = Re(X_{o}^HY_o)$$
+$$    T_o = Re(Y_{o}^HY_o)$$
+\begin{equation}
+    2Re(J^HJ)\theta = 2Re\begin{pmatrix}
+        X_{1}^HX_1 & 0 & 0 & X_{1}^HY_1\\
+        0 & X_{2}^HX_2 & 0 & X_{1}^HY_2\\
+        0 & 0 & X_{2}^HX_2 & X_{1}^HY_3\\
+        X_{1}^*Y_{1}^T & X_{2}^*Y_{2}^T & X_{3}^*Y_{3}^T & Y_{1}^HY_1+Y_{2}^HY_2+Y_{3}^HY_3\\
+    \end{pmatrix}
+    \begin{pmatrix}
+        \beta_1\\
+        \beta_2\\
+        \beta_3\\
+        \alpha
+    \end{pmatrix} 
+\end{equation}
+\begin{equation}
+    = 
+    2 \begin{pmatrix}
+        R_1\beta_1+S_1\alpha\\
+        R_2\beta_2+S_2\alpha\\
+        R_3\beta_3+S_3\alpha\\
+        S_{1}^T\beta_1+S_{2}^T\beta_2+S_{3}^T\beta_3 +(T_1+T_2+T_3)\alpha 
+    \end{pmatrix}
+\end{equation}
+
+which corresponds to the solutions in the normal equations in terms of alpha and beta.
+
+
+\begin{equation}
+    l^{LS}(\theta) = tr\{\theta^TRe(J^HJ)\theta\}
+\end{equation}
+
+from vector calculus, if
+\begin{equation}
+    \mathbf{f}= \mathbf{x^TBx}
+\end{equation}
+then,
+\begin{equation}
+    \frac{\partial \mathbf{f}}{\partial \mathbf{x}} = 2\mathbf{Bx}
+\end{equation}
+
+then the normal equation for polymax should be:
+\begin{equation}
+    \frac{\partial l^{LS}}{\partial \theta} = 2Re(J^HJ)\theta
+\end{equation}
