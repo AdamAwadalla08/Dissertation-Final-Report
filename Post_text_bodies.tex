@@ -177,6 +177,8 @@ in which:
 \begin{equation}
     T_o = \mathit{Re}(Y^{H}_o Y_o)
 \end{equation}
+
+\subsection{The \emph{Normal Equations}, and extracting the modal parameters}
 The cost function can then be minimized in terms of $\alpha$ and $\beta$ to find the best least-squares fit:
 \begin{equation}
     \begin{aligned}
@@ -220,4 +222,40 @@ The least-squares estimate for $\alpha$ is then:
     \end{Bmatrix}
 \end{equation*}
 
-This makes the denominator polynomial $\mathbf{D}$ a \emph{monic} polynomial. When fitting theoretical models to experimental data, the difficulty does not typically lie in the mathematical framework enabling the modelling process. Instead, the challenge is in constructing a model that provides physically meaningful insights. Given that the goal of many modal parameter estimation methods is to find a set of poles which As apparent, it is straightforward to find the polynomial coefficients using measured data. 
+This makes the denominator polynomial $\mathbf{D}$ a \emph{monic} polynomial. Based on the fundamental definition of system poles, which is the points at which the system's response is "infinite", one can say that for an arbitrary rational polynomial $p(x)$:
+\begin{equation}
+    p(x) = \frac{a_0 +a_1x+a_2x^2+\dots+a_nx^n}{b_0 +b_1x+b_2x^2+\dots+b_nx^n}
+\end{equation}
+To achieve said "infinite" value, one must find values of $x$ that represent the roots of the denominator polynomial. In the pLSCF model, one can exploit the monic property of the denominator polynomial. Frobenius companion matrices are square matrices that represent monic polynomials, given one has a monic polynomial
+\begin{equation*}
+    p(x) = x^n +a_{n-1}x^{n-1}+a_{n-2}x^{n-2}+\dots +a_1x+a_0
+\end{equation*}
+The companion matrix of said polynomial is defined as:
+\begin{equation}
+    C(p) = \begin{bmatrix}
+        0 & 0 & \dots &0& -a_0\\
+        1 & 0 & \dots &0& -a_1\\
+        0 & 1 & \dots &0& -a_2\\
+        \vdots & \vdots & \ddots & \vdots&\vdots\\
+        0 & 0 & \dots & 1 & -a_{n-1}
+    \end{bmatrix}
+\end{equation}
+A property of the companion matrix $C(p)\in \mathbb{R}^{n\times n}$ is that its eigenvalues $\lambda_1, \lambda_2, \dots, \lambda_n$ are the roots of $p(x)$, where $p(\lambda_i) = 0, \forall i =1,2,\dots,n$. This property aids in finding the system poles, after constructing the companion matrix for the denominator polynomial, an Eigendecomposition of the matrix yields the discrete time poles as the eigenvalues, and the corresponding eigenvectors are the modal participation factors:
+\begin{equation}
+    C(\mathbf{D}) = \begin{pmatrix}
+        0 & I &\dots & 0 & 0 \\
+        0 & 0 &I & \dots & 0 \\
+        \dots & \dots & \dots & \dots & \dots \\
+        0 & 0 &\dots & 0 & I \\
+        -\alpha_0^T & -\alpha_1^T &-\alpha_2^T& \dots -\alpha_{p-2}^T & -\alpha_{p-1}^T
+    \end{pmatrix}
+\end{equation}
+\begin{equation}
+    C(\mathbf{D})[\mathbf{L}] = \Lambda[\mathbf{L}]
+\end{equation}
+Where the matrix $[\mathbf{L}]$ is the Eigenmatrix (matrix with columns as eigenvectors), representing the modal participation factors of each mode, and the matrix $\Lambda$ contains the discrete time poles on its diagonal elements. The transpose of a companion matrix, this however does not affect the numerical value of the poles or participation factors [reference proof]. A $p$-order right matrix-fraction polynomial estimation should yield $pN_{in}$ number of poles.
+
+\subsection{Finding the modeshapes using the Least-Squares Frequency Domain (LSFD) method}
+
+
+This part should be in actual report: When fitting theoretical models to experimental data, the difficulty does not typically lie in the mathematical framework enabling the modelling process. Instead, the challenge is in constructing a model that provides physically meaningful insights. Given that the goal of many modal parameter estimation methods is to find a set of poles which As apparent, it is straightforward to find the polynomial coefficients using measured data. 
