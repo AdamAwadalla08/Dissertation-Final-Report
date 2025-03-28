@@ -2,12 +2,15 @@
 
 
 \subsection{Modal Analysis}
-In \emph{linear} structural dynamics, \emph{Modal Analysis} is universally regarded as the pre-eminent solution for the identification or characterization of a structure or system. Modal analysis provides a means to perform said identification by studying the structure's \emph{modal properties or parameters}. Whether using mathematical modelling or experimental testing, modal analysis is a pillar for an engineer's understanding of a structure's response to various forms of excitation.  This understanding is crucial for safety and complying with standards or for research areas such as structural health monitoring or system identification.
+In \emph{linear} structural dynamics, \emph{Modal Analysis} is universally recognized as the pre-eminent solution for the identifying and characterizing structures or systems. It achieves this by studying the structure's \emph{modal properties or parameters}—its natural frequencies, mode shapes, and damping ratios. Whether using mathematical modelling or experimental testing, modal analysis is key for engineers to understand the response of structures to various excitations or forces, ensuring safety, compliance with standards and regulations and supporting many research areas such as structural health monitoring or system identification.
 
-Fundamentally, modal analysis is the decomposition of the complex oscillatory behaviours of structures and systems into several smaller components called \emph{modes}. Every mode is a numerical or mathematical representation of a specific vibration pattern corresponding to a \emph{natural frequency}, the frequency, or set of, at which a system tends to oscillate at subject to an initial displacement or velocity, and an associated \emph{mode shape}, a vector or function which describes the relative movement of the various degrees-of-freedom (DOFs) or axis points for each natural frequency, and \emph{damping ratio}, a unitless parameter describing the energy dissipation properties of the system at the natural frequencies. The modal properties are defined by the interaction of the system's physical properties, its mass, stiffness, and damping. These inherent properties guide the system's vibration when subject to external forcing or initial displacements or velocities.
+Fundamentally, modal analysis is the decomposition of the complex oscillatory behaviour of structures into smaller, more intuitive components called \emph{modes}. Each mode is a mathematical representation of a specific vibration pattern associated with a \emph{natural frequency}, the frequency (or set of) at which a system tends to oscillate when displaced, and a corresponding \emph{mode shape}, a vector which describes the relative movement among the degrees-of-freedom (DOFs) or axis points. The \emph{damping ratio}, a unitless parameter, quantifies the energy dissipation of the system at these natural frequencies. The modal properties are defined by the interaction of the system's physical properties, its mass, stiffness, and damping. These inherent properties guide the system's vibration when subject to external forcing or initial displacements or velocities.
 
-Based on the theory, the standard procedure for modal analysis begins with forming the equations of motion (EOMs) that represent a system. Typically, the EOMs are second order matrix differential equations. Considering a system with an arbitrary number $N$, degrees-of-freedom as shown in figure \ref{fig:ndof-chain}. Interpreting Newton's second law as: $$\sum F_i = m_i\ddot{\mathbf{x}}_i$$ Where $F_i$ is a force acting on the $i$-th DOF, $m_i$ is the mass, and $\mathbf{x}_i$ is the coordinate of said DOF. Or the Euler-Lagrange equation as such: $$\frac{d}{dt}\left(\frac{\partial T}{\partial \dot{q}_i}\right) - \frac{\partial T}{\partial q_i} + \frac{\partial U}{\partial q_i} = Q_i$$
-Where $q_i$ is a generalized coordinate, for this system one can take $q_i =\mathbf{x}_i$, $T$ is the system's kinetic energy, $U$ is the potential energy, and $Q_i$ are the non-conservative forces which impart or dissipate energy from the system. One finds that the equations of motion for the system are defined as shown in Equation \ref{eq:ndof-eoms}
+Based on the theory, the standard procedure for modal analysis begins with forming the equations of motion (EOMs) that represent a system, typically, second order matrix differential equations. Consider a system with an arbitrary number $N$, degrees-of-freedom as shown in figure \ref{fig:ndof-chain}. Using Newton's second law,
+ $$\sum F_i = m_i\ddot{\mathbf{x}}_i$$ 
+ Where $F_i$ is a force acting on the $i$-th DOF, $m_i$ is the mass, and $\mathbf{x}_i$ is the coordinate, or alternatively the Euler-Lagrange equation as such: 
+ $$\frac{d}{dt}\left(\frac{\partial T}{\partial \dot{q}_i}\right) - \frac{\partial T}{\partial q_i} + \frac{\partial U}{\partial q_i} = Q_i$$
+Where $q_i$ is a generalized coordinate (take $q_i = x_i$ for this system), $T$ is the system's kinetic energy, $U$ is the potential energy, and $Q_i$ represents the non-conservative forces. The resulting equations of motion for the system are given in Equation \ref{eq:ndof-eoms}.
 
 \begin{equation}\label{eq:ndof-eoms}
     \begin{aligned}
@@ -24,7 +27,9 @@ Where $q_i$ is a generalized coordinate, for this system one can take $q_i =\mat
     \caption{A "lumped-mass" system of $N$ degrees-of-freedom}
     \label{fig:ndof-chain}
 \end{figure}
-Assembling the physical parameters into respective matrices as highlighted in Equation \ref{eq:system-matrices}, the characteristic differential equation of the system is found.
+
+By assembling the physical parameters into respective matrices as highlighted in Equation \ref{eq:system-matrices}, the characteristic differential equation of the system is obtained:
+
 \begin{equation}\label{eq:system-matrices}
     \begin{aligned}
         \relax [\mathbf{K}] &= \begin{bmatrix}
@@ -48,28 +53,28 @@ Assembling the physical parameters into respective matrices as highlighted in Eq
     \therefore [\mathbf{M}]\mathbf{\ddot{x}}+[\mathbf{C}]\mathbf{\dot{x}}+[\mathbf{K}]\mathbf{x} = \mathbf{F}
 \end{equation}
 
-For the sake of simplicity, assume that the vibrating system presented is left to vibrate freely, and is undamped, meaning $\mathbf{F}$ and $\mathbf{C}$ are zero. If the solution of the presented differential equation is harmonic such that $\mathbf{x}(t) = \Psi e^{j\omega t}$, one finds that equation \ref{eq:general_damped_mdof} reduces to:
+For simplicity, assume the system presented vibrates freely, and is undamped, so $\mathbf{F}$ and $[\mathbf{C}]$ are zero. If the solution of the presented differential equation is harmonic, i.e. $\mathbf{x}(t) = \Psi e^{j\omega t}$, one finds that equation \ref{eq:general_damped_mdof} reduces to:
 \begin{equation}
     ([\mathbf{K}] - \omega^2[\mathbf{M}])\Psi = 0
 \end{equation}
-By a rearrangement of the variables, one can manipulate the equation into becoming the general form for the eigenvalue problem:
+Rearranging the terms, the equation into takes the general form of an eigenvalue problem:
 \begin{equation}
     \begin{aligned}
         \relax [\mathbf{A}]& =  [\mathbf{M}]^{-1}[\mathbf{K}]\\
         [\mathbf{A}]&\Psi = \omega^2\Psi
     \end{aligned}
 \end{equation}
-Where $\mathbf{A}$ is the so-called dynamical matrix, $\omega^2$ is the eigenvalue — often referred to as an \emph{eigenfrequency} — of the matrix, and $\Psi$ is the corresponding eigenvector representing the modeshape vector.
+Here, $\mathbf{A}$ is the so-called dynamical matrix, $\omega^2$ is the eigenvalue — often referred to as an \emph{eigenfrequency} — and $\Psi$ is the corresponding eigenvector representing the mode shape.
 
 % In systems with a finite number of degrees of freedom—often referred to as discrete systems—the modal analysis is performed using the dynamical matrix $[\mathbf{A}]$, which encapsulates the system's inertial and elastic properties. Building upon the discrete case, into systems which are modelled as continuous functions, the physical parameters of the systems are distributed spatially. This results into partial differential equation which governs the motion, where  finite dimensional matrices are then replaced with linear operators. Consequently, an eigenvalue problem is formed differently, in terms of a differential operator, where the eigenvalues are still correspondent to the natural frequency, and the respective eigenfunctions are the modeshapes in the spacial domain.
 
-In systems with a finite number of degrees of freedom—often referred to as discrete systems—the modal analysis is performed using the dynamical matrix $[\mathbf{A}]$, which encapsulates the system's inertial and elastic properties. Building upon the discrete case, in systems that are modelled as continuous functions, the physical parameters of the system are distributed spatially. This results in a partial differential equation that governs the motion, where finite-dimensional matrices are replaced by linear operators. Consequently, an eigenvalue problem is formed in terms of a differential operator, with eigenvalues corresponding to the natural frequencies and the associated eigenfunctions representing the mode shapes in the spatial domain\footnote{An \emph{eigenvector}, or an \emph{eigenfunction}, of a matrix or linear operator defined on some vector/function space is any non-zero vector/function in said space that when multiplied or acted upon by the matrix/linear operator is equivalent to being multiplied by some scalar factor, said scalar factor is referred to as the \emph{eigenvalue}.}. This principle, applied to transversal vibration of an Euler-Bernoulli beam results in the eigenvalue problem defined in equation \ref{eq:eigenfunction-beam}:
+In discrete systems, with a finite number of degrees of freedom, the modal analysis is performed using the dynamical matrix $[\mathbf{A}]$, which encapsulates the system's inertial and elastic properties. When extending the approach to continuous systems (systems described by continuous functions), the physical parameters are distributed spatially. This results in a partial differential equation that governs the motion, where finite-dimensional matrices are replaced by linear operators. Consequently, an eigenvalue problem is formed in terms of a differential operator, with eigenvalues corresponding to the natural frequencies* and the associated eigenfunctions representing the mode shapes in the spatial domain\footnote{An \emph{eigenvector}, or an \emph{eigenfunction}, of a matrix or linear operator defined on some vector/function space is any non-zero vector/function in said space that when multiplied or acted upon by the matrix/linear operator is equivalent to being multiplied by some scalar factor, said scalar factor is referred to as the \emph{eigenvalue}.}. For example this principle applied to transverse vibration of an Euler-Bernoulli beam yields the eigenvalue problem:
 \begin{equation}\label{eq:eigenfunction-beam}
     \Delta^2Y(x) = \beta^4Y(x)
 \end{equation}
-Where $\Delta$ is the Laplacian operator (second partial derivative in Cartesian coordinate system), and $\beta^4 = \frac{\omega^2}{c^2}$, in which $\omega$ is the natural frequency, and $c^2$ is the ratio of the flexural rigidity of the beam, and its inertia.
+where $\Delta$ is the Laplacian operator (i.e. second partial derivative in Cartesian coordinate system), and $\beta^4 = \frac{\omega^2}{c^2}$, in which $\omega$ is the natural frequency, and $c^2$ is the ratio of the beam's flexural rigidity and its inertia.
 
-In both cases, discrete and continuous, by mathematically manipulating the EOMs governing the system, differential equations are reduced to eigenvalue problems—a solution that is not only mathematically elegant and robust, as it is applicable to all linear systems, but also linguistically apt, given that "eigen" means "one's own". However, while this approach to modal analysis may be elegant, its practical applications rarely exist. Real world vibrating structures and systems rarely conform to the idealized assumptions of lumped-mass systems or Euler-Bernoulli beams with known boundary conditions, this limitation can be attributed to more complex geometries, or internal interactions between the components of a system. This limitation has incentivized academics and practitioners to approach modal analysis differently.  
+In both discrete and continuous cases, the process of reducing the governing equations into eigenvalue problems is mathematically elegant, robust, and applicable to all linear systems. Despite this approach's elegance, its practical applications rarely exist. Real world structures and systems seldom conform to the idealized assumptions of lumped-mass systems or Euler-Bernoulli beams with known boundary conditions, this discrepancy can be attributed to more complex geometries, or internal interactions between the components of a system. This limitation has incentivized both academics and practitioners to approach modal analysis differently.
 
 
 
