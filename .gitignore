@@ -2,6 +2,7 @@
 *.aux
 *.out
 *.pdf
+*.blg
 !main.pdf
 *.synctex.gz
 Figures/

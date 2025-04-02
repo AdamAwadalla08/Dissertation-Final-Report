@@ -1,15 +1,15 @@
 \section{Introduction}
-The theoretical and experimental study of structural dynamics has regularly helped engineers grasp the behaviour of systems and structures encountered in everyday life, and has consequently aided in making them safer, lighter, and greener. This ranges from the design of airplanes and cars to the stability of buildings as well as the functionality of household appliances like washing machines or air conditioners. Hence, engineers and researchers have been consistently striving to further understand and predict the dynamic characteristics of these various structures. This understanding is crucial for ensuring safety and compliance, performance, and reliability
+The theoretical and experimental study of structural dynamics has regularly helped engineers grasp the behaviour of systems and structures encountered in everyday life, and has consequently aided in making them safer, lighter, and greener. This ranges from the design of aeroplanes and cars to the stability of buildings as well as the functionality of household appliances like washing machines or air conditioners. Hence, engineers and researchers have been consistently striving to further understand and predict the dynamic characteristics of these various structures. This understanding is crucial for ensuring safety and compliance, performance, and reliability. \cite{Rao2018,Maia2024,Worden2001nonlinear}
 
 \subsection{Modal Analysis}
 \subsubsection{Theoretical Overview}
-In \emph{linear} structural dynamics, \emph{Modal Analysis} is universally recognized as the pre-eminent solution for the identifying and characterizing structures or systems. It achieves this by studying the structure's \emph{modal properties or parameters}—its natural frequencies, mode shapes, and damping ratios. Whether using mathematical modelling or experimental testing, modal analysis is key for engineers to understand the response of structures to various excitations or forces, ensuring safety, compliance with standards and regulations and supporting many research areas such as structural health monitoring or system identification.
+In linear structural dynamics, Modal Analysis is universally recognized as the pre-eminent solution for the identifying and characterizing structures or systems. It achieves this by studying the structure's modal properties or parameters — its natural frequencies, mode shapes, and damping ratios. Whether using mathematical modelling or experimental testing, modal analysis is key for engineers to understand the response of structures to various excitations or forces, ensuring safety, compliance with standards and regulations, and supporting many research areas such as Structural Health Monitoring or System Identification. \cite{ewins2000modal,fu2001modal,Maia1997}
 
-Fundamentally, modal analysis is the decomposition of the complex oscillatory behaviour of structures into smaller, more intuitive components called \emph{modes}. Each mode is a mathematical representation of a specific vibration pattern associated with a \emph{natural frequency}, the frequency (or set of) at which a system tends to oscillate when displaced, and a corresponding \emph{mode shape}, a vector which describes the relative movement among the degrees-of-freedom (DOFs) or axis points. The \emph{damping ratio}, a unitless parameter, quantifies the energy dissipation of the system at these natural frequencies. The modal properties are defined by the interaction of the system's physical properties, its mass, stiffness, and damping. These inherent properties guide the system's vibration when subject to external forcing or initial displacements or velocities.
+Fundamentally, modal analysis is the decomposition of the complex oscillatory behaviour of structures into smaller, more intuitive components called modes. Each mode is a mathematical representation of a specific vibration pattern associated with a natural frequency, the frequency (or set of) at which a system tends to oscillate when displaced, and a corresponding mode shape, a vector which describes the relative movement among the degrees-of-freedom. The damping ratio, a unitless parameter, quantifies the energy dissipation of the system for each mode. The modal properties are defined by the interaction of the system's physical properties, its mass, stiffness, and damping. These inherent properties guide the system's vibration when subject to external forcing or initial displacements or velocities.
 
-Based on the theory, the standard procedure for modal analysis begins with forming the equations of motion (EOMs) that represent a system, typically, second order matrix differential equations. Consider a system with an arbitrary number $N$, degrees-of-freedom as shown in figure \ref{fig:ndof-chain}. Using Newton's second law,
+The standard procedure for modal analysis begins with forming the equations of motion (EOMs) that represent a system, typically, second order matrix differential equations. Consider a system with an arbitrary number $N$, degrees-of-freedom (DOFs) as shown in Figure \ref{fig:ndof-chain}. Using Newton's second law \cite{thornton2014classical},
  $$\sum F_i = m_i\ddot{\mathbf{x}}_i$$ 
- Where $F_i$ is a force acting on the $i$-th DOF, $m_i$ is the mass, and $\mathbf{x}_i$ is the coordinate, or alternatively the Euler-Lagrange equation as such: 
+ Where $F_i$ is a force acting on the $i$-th DOF, $m_i$ is the mass, and $\mathbf{x}_i$ is the coordinate, or alternatively the Euler-Lagrange equation as such \cite{thornton2014classical}: 
  $$\frac{d}{dt}\left(\frac{\partial T}{\partial \dot{q}_i}\right) - \frac{\partial T}{\partial q_i} + \frac{\partial U}{\partial q_i} = Q_i$$
 Where $q_i$ is a generalized coordinate (take $q_i = x_i$ for this system), $T$ is the system's kinetic energy, $U$ is the potential energy, and $Q_i$ represents the non-conservative forces. The resulting equations of motion for the system are given in Equation \ref{eq:ndof-eoms}.
 
@@ -59,7 +59,7 @@ For simplicity, assume the system presented vibrates freely, and is undamped, so
     ([\mathbf{K}] - \omega^2[\mathbf{M}])\Psi = 0
 \end{equation}
 Rearranging the terms, the equation into takes the general form of an eigenvalue problem:
-\begin{equation}
+\begin{equation}\label{eq:eigen-solution}
     \begin{aligned}
         \relax [\mathbf{A}]& =  [\mathbf{M}]^{-1}[\mathbf{K}]\\
         [\mathbf{A}]&\Psi = \omega^2\Psi
@@ -69,15 +69,62 @@ Here, $\omega^2$ is the eigenvalue of matrix $\mathbf{A}$  — often referred to
 
 % In systems with a finite number of degrees of freedom—often referred to as discrete systems—the modal analysis is performed using the dynamical matrix $[\mathbf{A}]$, which encapsulates the system's inertial and elastic properties. Building upon the discrete case, into systems which are modelled as continuous functions, the physical parameters of the systems are distributed spatially. This results into partial differential equation which governs the motion, where  finite dimensional matrices are then replaced with linear operators. Consequently, an eigenvalue problem is formed differently, in terms of a differential operator, where the eigenvalues are still correspondent to the natural frequency, and the respective eigenfunctions are the modeshapes in the spacial domain.
 
-In discrete systems, with a finite number of degrees of freedom, the modal analysis is performed using the matrix $[\mathbf{A}]$, which encapsulates the system's inertial and elastic properties. When extending the approach to continuous systems (systems described by continuous functions), the physical parameters are distributed spatially. This results in a partial differential equation that governs the motion, where finite-dimensional matrices are replaced by linear operators. Consequently, an eigenvalue problem is formed in terms of a differential operator, with eigenvalues corresponding to the natural frequencies* and the associated eigenfunctions representing the mode shapes in the spatial domain\footnote{An \emph{eigenvector}, or an \emph{eigenfunction}, of a matrix or linear operator defined on some vector/function space is any non-zero vector/function in said space that when multiplied or acted upon by the matrix/linear operator is equivalent to being multiplied by some scalar factor, said scalar factor is referred to as the \emph{eigenvalue}.}. For example this principle applied to transverse vibration of an Euler-Bernoulli beam yields the eigenvalue problem:
+In discrete systems, with a finite number of degrees of freedom, the modal analysis is performed using the matrix $[\mathbf{A}]$, which encapsulates the system's inertial and elastic properties. When extending the approach to systems modelled as continuous mediums, the physical parameters are distributed spatially. This results in a partial differential equation that governs the motion, where finite-dimensional matrices are replaced by linear operators. Consequently, an eigenvalue problem is formed in terms of a differential operator, with eigenvalues corresponding to the natural frequencies and the associated eigenfunctions representing the mode shapes in the spatial domain\footnote{An \emph{eigenvector}, or an \emph{eigenfunction}, of a matrix or linear operator defined on some vector/function space is any non-zero vector/function in said space that when multiplied or acted upon by the matrix/linear operator is equivalent to being multiplied by some scalar factor, said scalar factor is referred to as the \emph{eigenvalue}.}. For example this principle applied to transverse vibration of an Euler-Bernoulli beam yields the eigenvalue problem:
 \begin{equation}\label{eq:eigenfunction-beam}
     \Delta^2Y(x) = \beta^4Y(x)
 \end{equation}
-where $\Delta$ is the Laplacian operator (i.e. second partial derivative in Cartesian coordinate system), and $\beta^4 = \frac{\omega^2}{c^2}$, in which $\omega$ is the natural frequency, and $c^2$ is the ratio of the beam's flexural rigidity and its inertia.
+where $\Delta$ is the Laplacian operator (i.e. second partial derivative in Cartesian coordinate system), and $\beta^4 = \frac{\omega^2}{c^2}$, in which $\omega$ is the natural frequency, and $c^2$ is the ratio of the beam's flexural rigidity and its inertia. \cite{Rao2018,Blevins2015}
 
-In both discrete and continuous cases, the process of reducing the governing equations into eigenvalue problems is mathematically elegant, robust, and applicable to all linear systems. Despite this approach's elegance, its practical applications rarely exist. Real world structures and systems seldom conform to the idealized assumptions of lumped-mass systems or Euler-Bernoulli beams with known boundary conditions, this discrepancy can be attributed to more complex geometries, or internal interactions between the components of a system. This limitation has incentivized both academics and practitioners to approach modal analysis differently.
+In both discrete and continuous cases, the process of reducing the governing equations into eigenvalue problems is mathematically elegant, robust, and applicable to all linear systems. Despite this approach's elegance, its practical applications rarely exist, as real world structures and systems seldom conform to the idealized assumptions of lumped-mass systems or Euler-Bernoulli beams with known boundary conditions. Thus, academics and practitioners are driven to approach modal analysis differently, to compensate for this limitation.
 
-\subsubsection{Modal Analysis in practice, industry, and academia}
+\subsubsection{Modal Analysis in practice, academia, and industry}\label{sec:applications}
+
+There are two mainstream modal analysis procedures which address this limitation: Numerical Modal Analysis, and Experimental Modal Analysis, often referred to as Modal Testing. Numerical Modal Analysis is used to simulate dynamic behaviour when modal testing is unimplementable or unnecessary. It involves discretization — typically using finite element modelling — and solving the resulting equations of motion under appropriate initial and boundary conditions in a process similar to that shown in Equations \ref{eq:ndof-eoms}-\ref{eq:eigen-solution}. Numerical Modal Analysis offers a faster means of evaluating simpler systems without the need for experimental testing. 
+
+In contrast, Modal Testing relies on the principle that, in a mostly linear system, the same modal parameters used to predict the system's response can be obtained from a measurement of that response. It utilizes various experimental methods such as shaker testing or impact testing to gather response data using sensors like accelerometers or laser vibrometers. Typically, one would pair the experimental set-up with computational algorithms to extract the modal parameters from the test data. An example set-up for a modal test using a shaker is showcased in Figure \ref{fig:shaker-test}. Modal Testing is often the first step for applications such validating models, or measuring the effect of environmental and operational conditions on structures. This underscores why modal testing is typically preferred and more prevalent, as it directly captures the system's response in a way that numerical modal analysis is unable to. Due to the widespread adoption of modal testing in structural dynamics, the term modal analysis is generally interpreted as modal testing, and due to the nature of the work in this report, the term modal analysis will also be referring to modal testing.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.75\linewidth]{Figures/Shaker-test.png}
+    \caption{Typical electrodynamic shaker experimental set up, adapted from He \& Fu \cite{fu2001modal}}
+    \label{fig:shaker-test}    
+\end{figure}
+
+In modern research areas such as structural health monitoring (SHM)—where the primary objective is to observe changes in an asset's structural condition through continuous monitoring—modal analysis is frequently employed because a system's modal parameters are highly sensitive to its physical state \cite{WordenSHM2013}. Natural frequencies and mode shapes are considered damage-sensitive features; whether changes result from cracks, corrosion, environmental effects, or fatigue, any structural alteration will modify the physical parameters and lead to a quantifiable change in the modal parameters. By statistically comparing a structure's current modal parameters with its baseline measurements, typically taken when the structure is in good condition, early signs of damage and degradation can be detected. This approach enables the effective monitoring of essential infrastructure, including bridges \cite{Bunce2024,Maeck2001,Peeters2000}, buildings \cite{Saeed2024}, and wind turbines \cite{Bull2021,Tsiapoki2024}, making modal analysis an invaluable tool for ensuring the safety and longevity of many everyday structures, Making modal analysis an invaluable tool for ensuring the safety and longevity of many everyday structures. See Figure \ref{fig:z24-bridge}, and Figure \ref{fig:hawk-tuah} for examples of modal testing in SHM contexts for civil and structural engineering and for aerospace respectively.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width = 0.75\linewidth]{Figures/z24 modeshapes color.png}
+    \caption{Model analysis results of the Z24 bridge where Maeck et al. in \cite{Maeck2001,MAECK2003,Peeters2000} performed an experimental campaign on a bridge in Switzerland to benchmark vibration based techniques for damage identification}
+    \label{fig:z24-bridge}
+\end{figure}
+
+Modal analysis is widely used across various engineering fields. In the automotive industry, it plays an essential role in enhancing vehicle design, safety, comfort, and performance by analysing responses to factors like axle gear noise, unbalanced loads, and road harshness, thereby optimizing lightweight and high-strength designs \cite{Glen2003nvh,Nissan1975,Martz1979,French1998,Liu2020}. In the aerospace sector, detailed dynamic analysis is crucial for balancing structural integrity with weight reduction. Here, modal analysis verifies computational models, controls unwanted vibrations, and evaluates effects such as wind-induced loads and fluid-induced phenomena. Together, these applications provide vital insights that improve overall structural resilience and performance \cite{fu2001modal,ewins2000modal,wright2008aeroelastics,Chamberlain2017,saffry2014,F16gvt2011,UAV2012,Alexander2024}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Figures/F16 test.png}
+    \caption{Peeters et al. \cite{F16gvt2011}, performed modal tests on wind-tunnel model and full sized F16 aircraft}
+    \label{fig:f16-test}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Figures/hawk-tuah.jpg}
+    \caption{BAE systems Hawk T1A aircraft}
+    \label{fig:hawk-tuah}
+\end{figure}
+
+In civil and structural engineering, modal analysis — particularly Operational Modal Analysis (OMA) — is extensively used to predict and evaluate the behaviour of structures subjected to seismic, crowd, wind, wave, or traffic-induced loading. This technique is critical for assessing tall buildings, dams, and bridges, where accurate response measurements and parameter identification directly inform design decisions that enhance resilience and safety. Ultimately, the insights provided by modal analysis help extend the lifespan of structures and safeguard human lives. \cite{fu2001modal,ewins2000modal, Rainieri2014,Archila2013,Abdelnour2024,Saeed2024,Reynolds2009,Roia2015,Cantieni2004,Peeters2000,Maeck2001,Bunce2024}
+
+\subsection{Computation in engineering, and the software engineering industry}
+
+Building on the earlier discussion that highlighted the integration of computation with modal testing, it is evident that the engineering industry is heavily reliant on software and computational methods. This reliance arises from the extensive volumes of data—such as laboratory results or continuous monitoring outputs—that require processing, as well as from the complexity of calculations that are impractical to perform manually. Common examples include the use of advanced 3D modelling and drawing software, such as Fusion and SolidWorks, programming for data analysis using languages like Python, MATLAB or C++, and various simulation tools like Simulink, ANSYS, or OpenFOAM. It is a reasonable assumption that software usage is indispensable to engineering practices.
+
+Multiple classifications, interpretations, and naming conventions exist among software developers regarding software categorization. To avoid ambiguity in this report, the terms "proprietary software" and "open-source software" are defined explicitly. Open-source software (OSS) refers to software licensed to allow free use, modification, and redistribution of both the software and its source code. In contrast, proprietary software denotes software tools or programming environments that require the purchase of a licence for use and restrict access to the source code, thereby preventing modification and redistribution. Previous work \cite{InterimReport} presented a more comprehensive comparison of the two software distribution paradigms. To avoid redundancy, only a brief summary of those findings is provided here, followed by an overview of the conclusions and the implications for future work.
+
+The earliest efforts in software commercialization demonstrated considerable foresight, causing a widespread adoption of proprietary tools in engineering industries. These tools gained traction due to rigorous testing, continuous support, adherence to industry standards, and user-friendly interfaces that reduced errors and enhanced usability. Conversely, inherent drawbacks such as high costs, usage restrictions, lack of source code access, potential obsolescence, and privacy concerns have emerged. In contrast, open-source alternatives offer cost-free access, greater user control, and community-driven support, though they often face challenges with limited testing and installation complexity. As a result, selecting between open-source and proprietary solutions requires a careful evaluation of these trade-offs, balancing reliability and robustness against cost and flexibility.
+
+\subsection{Defining a clear project scope}
+The pivotal role that modal analysis plays in advancing engineering fields provides motivation for this project. As highlighted in Section \ref{sec:applications}, modal analysis is essential for ensuring the comfort, performance, and safety of vehicles and aircraft, as well as for safeguarding critical infrastructure such as buildings, bridges, railway tracks, and offshore structures. Despite its widespread application, many engineers and researchers rely on software tools to perform modal analysis without fully understanding the underlying theory and algorithms, which hinders their ability to interpret results or adapt the methods for unique challenges that are presented quite often. This reliance has enabled companies, e.g. Siemens or Structural Vibration Solutions, to charge exorbitant prices for software licences — a situation that thrives in a market dominated by a monopoly or oligopoly of robust solutions. To address this gap, the project introduces an accessible, well-documented, and rigorously tested open-source software tool that produces accurate results, elucidates the fundamental theory, and permits customization for novel applications. The development of a Python library for modal analysis represents the first robust and reliable open-source solution in this domain.
 
 
 
@@ -102,16 +149,10 @@ Report Story:\\
 Onto software usage in engineering contexts
 \begin{itemize}
     \item engineers consistently rely on software tools, this is great as it streamlines the important processes.
-    \item Important aspects of software dev. :
-    \begin{itemize}
-        \item logic/control flow
-        \item complexities and big O notation
-        \item unit testing and integration testing.
-        \item version control.
-        \item foss vs. prop. discuss why it's cheaper in long run, and better for everyone involved.
-    \end{itemize}
+    \item foss vs. prop. discuss why it's cheaper in long run, and better for everyone involved.
     \item Revisit the aims and objectives.
 \end{itemize}
+
 
 \section{Algorithms / development:}
 \textbf{maths-y bit}
