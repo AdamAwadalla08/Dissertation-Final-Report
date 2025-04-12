@@ -1,8 +1,9 @@
-\section{Introduction}\label{sec:intro}
+\chapter{Introduction}
+\label{sec:intro}
 The theoretical and experimental study of structural dynamics has regularly helped engineers grasp the behaviour of systems and structures encountered in everyday life, and has consequently aided in making them safer, lighter, and greener. This ranges from the design of aeroplanes and cars to the stability of buildings as well as the functionality of household appliances like washing machines or air conditioners. Hence, engineers and researchers have been consistently striving to further understand and predict the dynamic characteristics of these various structures. This understanding is crucial for ensuring safety and compliance, performance, and reliability. \cite{Rao2018,Maia2024,Worden2001nonlinear}
 
-\subsection{Modal Analysis}\label{sec:intro-modal}
-\subsubsection{Theoretical Overview}\label{sec:intro-modal-maths}
+\section{Modal Analysis}\label{sec:intro-modal}
+\subsection{Theoretical Overview}\label{sec:intro-modal-maths}
 In linear structural dynamics, Modal Analysis is universally recognized as the pre-eminent solution for the identifying and characterizing structures or systems. It achieves this by studying the structure's modal properties or parameters — its natural frequencies, mode shapes, and damping ratios. Whether using mathematical modelling or experimental testing, modal analysis is key for engineers to understand the response of structures to various excitations or forces, ensuring safety, compliance with standards and regulations, and supporting many research areas such as Structural Health Monitoring or System Identification. \cite{ewins2000modal,fu2001modal,Maia1997}
 
 Fundamentally, modal analysis is the decomposition of the complex oscillatory behaviour of structures into smaller, more intuitive components called modes. Each mode is a mathematical representation of a specific vibration pattern associated with a natural frequency, the frequency (or set of) at which a system tends to oscillate when displaced, and a corresponding mode shape, a vector which describes the relative movement among the degrees-of-freedom. The damping ratio, a unitless parameter, quantifies the energy dissipation of the system for each mode. The modal properties are defined by the interaction of the system's physical properties, its mass, stiffness, and damping. These inherent properties guide the system's vibration when subject to external forcing or initial displacements or velocities.
@@ -55,7 +56,7 @@ By assembling the physical parameters into respective matrices as highlighted in
 \end{equation}
 
 For simplicity, assume the system presented vibrates freely, and is undamped, so $\mathbf{F}$ and $[\mathbf{C}]$ are zero. If the solution of the presented differential equation is harmonic, i.e. $\mathbf{x}(t) = \Psi e^{j\omega t}$, one finds that equation \ref{eq:general_damped_mdof} reduces to:
-\begin{equation}
+\begin{equation}\label{eq:k-minus-m}
     ([\mathbf{K}] - \omega^2[\mathbf{M}])\Psi = 0
 \end{equation}
 Rearranging the terms, the equation into takes the general form of an eigenvalue problem:
@@ -77,7 +78,7 @@ where $\Delta$ is the Laplacian operator (i.e. second partial derivative in Cart
 
 In both discrete and continuous cases, the process of reducing the governing equations into eigenvalue problems is mathematically elegant, robust, and applicable to all linear systems. Despite this approach's elegance, its practical applications rarely exist, as real world structures and systems seldom conform to the idealized assumptions of lumped-mass systems or Euler-Bernoulli beams with known boundary conditions. Thus, academics and practitioners are driven to approach modal analysis differently, to compensate for this limitation.
 
-\subsubsection{Modal Analysis in practice, academia, and industry}\label{sec:intro-modal-applications}
+\subsection{Modal Analysis in practice, academia, and industry}\label{sec:intro-modal-applications}
 
 There are two mainstream modal analysis procedures which address this limitation: Numerical Modal Analysis, and Experimental Modal Analysis, often referred to as Modal Testing. Numerical Modal Analysis is used to simulate dynamic behaviour when modal testing is unimplementable or unnecessary. It involves discretization — typically using finite element modelling — and solving the resulting equations of motion under appropriate initial and boundary conditions in a process similar to that shown in Equations \ref{eq:ndof-eoms}-\ref{eq:eigen-solution}. Numerical Modal Analysis offers a faster means of evaluating simpler systems without the need for experimental testing. 
 
@@ -90,8 +91,8 @@ In contrast, Modal Testing relies on the principle that, in a mostly linear syst
     \label{fig:shaker-test}    
 \end{figure}
 
-In modern research areas such as structural health monitoring (SHM)—where the primary objective is to observe changes in an asset's structural condition through continuous monitoring—modal analysis is frequently employed because a system's modal parameters are highly sensitive to its physical state \cite{WordenSHM2013}. Natural frequencies and mode shapes are considered damage-sensitive features; whether changes result from cracks, corrosion, environmental effects, or fatigue, any structural alteration will modify the physical parameters and lead to a quantifiable change in the modal parameters. By statistically comparing a structure's current modal parameters with its baseline measurements, typically taken when the structure is in good condition, early signs of damage and degradation can be detected. This approach enables the effective monitoring of essential infrastructure, including bridges \cite{Bunce2024,Maeck2001,Peeters2000}, buildings \cite{Saeed2024}, and wind turbines \cite{Bull2021,Tsiapoki2024}, making modal analysis an invaluable tool for ensuring the safety and longevity of many everyday structures, Making modal analysis an invaluable tool for ensuring the safety and longevity of many everyday structures. See Figure \ref{fig:z24-bridge}, and Figure \ref{fig:hawk-tuah} for examples of modal testing in SHM contexts for civil and structural engineering and for aerospace respectively.
-\begin{figure}[h]
+In modern research areas such as structural health monitoring (SHM)—where the primary objective is to observe changes in an asset's structural condition through continuous monitoring—modal analysis is frequently employed because a system's modal parameters are highly sensitive to its physical state \cite{WordenSHM2013}. Natural frequencies and mode shapes are considered damage-sensitive features; whether changes result from cracks, corrosion, environmental effects, or fatigue, any structural alteration will modify the physical parameters and lead to a quantifiable change in the modal parameters. By statistically comparing a structure's current modal parameters with its baseline measurements, typically taken when the structure is in good condition, early signs of damage and degradation can be detected. This approach enables the effective monitoring of essential infrastructure, including bridges \cite{Bunce2024,Maeck2001,Peeters2000}, buildings \cite{Saeed2024}, and wind turbines \cite{Bull2021,Tsiapoki2024}, making modal analysis an invaluable tool for ensuring the safety and longevity of many everyday structures. See Figure \ref{fig:z24-bridge}, and Figure \ref{fig:hawk-tuah} for examples of modal testing in SHM contexts for civil and structural engineering and for aerospace respectively.
+\begin{figure}[H]
     \centering
     \includegraphics[width = 0.75\linewidth]{Figures/z24 modeshapes color.png}
     \caption{Model analysis results of the Z24 bridge where Maeck et al. in \cite{Maeck2001,MAECK2003,Peeters2000} performed an experimental campaign on a bridge in Switzerland to benchmark vibration based techniques for damage identification}
@@ -99,14 +100,14 @@ In modern research areas such as structural health monitoring (SHM)—where the 
 \end{figure}
 
 Modal analysis is widely used across various engineering fields. In the automotive industry, it plays an essential role in enhancing vehicle design, safety, comfort, and performance by analysing responses to factors like axle gear noise, unbalanced loads, and road harshness, thereby optimizing lightweight and high-strength designs \cite{Glen2003nvh,Nissan1975,Martz1979,French1998,Liu2020}. In the aerospace sector, detailed dynamic analysis is crucial for balancing structural integrity with weight reduction. Here, modal analysis verifies computational models, controls unwanted vibrations, and evaluates effects such as wind-induced loads and fluid-induced phenomena. Together, these applications provide vital insights that improve overall structural resilience and performance \cite{fu2001modal,ewins2000modal,wright2008aeroelastics,Chamberlain2017,saffry2014,F16gvt2011,UAV2012,Alexander2024}.
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{Figures/F16 test.png}
     \caption{Peeters et al. \cite{F16gvt2011}, performed modal tests on wind-tunnel model and full sized F16 aircraft}
     \label{fig:f16-test}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{Figures/hawk-tuah.jpg}
     \caption{BAE systems Hawk T1A aircraft}
@@ -116,7 +117,7 @@ Modal analysis is widely used across various engineering fields. In the automoti
 In civil and structural engineering, modal analysis — particularly Operational Modal Analysis (OMA) — is extensively used to predict and evaluate the behaviour of structures subjected to seismic, crowd, wind, wave, or traffic-induced loading. This technique is critical for assessing tall buildings, dams, and bridges, where accurate response measurements and parameter identification directly inform design decisions that enhance resilience and safety. Ultimately, the insights provided by modal analysis help extend the lifespan of structures and safeguard human lives. \cite{fu2001modal,ewins2000modal, Rainieri2014,Archila2013,Abdelnour2024,Saeed2024,Reynolds2009,Roia2015,Cantieni2004,Peeters2000,Maeck2001,Bunce2024}
 
 \pagebreak
-\subsection{Computation in engineering, and the software engineering industry}
+\section{Computation in engineering, and the software engineering industry}
 
 Building on the earlier discussion that highlighted the integration of computation with modal testing, it is evident that the engineering industry is heavily reliant on software and computational methods. This reliance arises from the extensive volumes of data—such as laboratory results or continuous monitoring outputs—that require processing, as well as from the complexity of calculations that are impractical to perform manually. Common examples include the use of advanced 3D modelling and drawing software, such as Fusion and SolidWorks, programming for data analysis using languages like Python, MATLAB or C++, and various simulation tools like Simulink, ANSYS, or OpenFOAM. It is a reasonable assumption that software usage is indispensable to engineering practices.
 
@@ -124,9 +125,9 @@ Multiple classifications, interpretations, and naming conventions exist among so
 
 The earliest efforts in software commercialization demonstrated considerable foresight, causing a widespread adoption of proprietary tools in engineering industries. These tools gained traction due to rigorous testing, continuous support, adherence to industry standards, and user-friendly interfaces that reduced errors and enhanced usability. Conversely, inherent drawbacks such as high costs, usage restrictions, lack of source code access, potential obsolescence, and privacy concerns have emerged. In contrast, open-source alternatives offer cost-free access, greater user control, and community-driven support, though they often face challenges with limited testing and installation complexity. As a result, selecting between open-source and proprietary solutions requires a careful evaluation of these trade-offs, balancing reliability and robustness against cost and flexibility.
 
-\subsection{Project Scope}\label{sec:intro-scope}
+\section{Project Scope}\label{sec:intro-scope}
 The pivotal role that modal analysis plays in advancing engineering fields provides motivation for this project. As highlighted in Section \ref{sec:intro-modal-applications}, modal analysis is essential for ensuring the comfort, performance, and safety of vehicles and aircraft, as well as for safeguarding critical infrastructure such as buildings, bridges, railway tracks, and offshore structures. Despite its widespread application, many engineers and researchers rely on software tools to perform modal analysis without fully understanding the underlying theory and algorithms, which hinders their ability to interpret results or adapt the methods for unique challenges that are presented quite frequently. This reliance has enabled companies, e.g. Siemens or Structural Vibration Solutions, to charge exorbitant prices for software licences — a situation that thrives in a market dominated by a monopoly of robust solutions. To address this gap, the project introduces an accessible, well-documented, and rigorously tested open-source software tool that produces accurate results, elucidates the fundamental theory, and permits customization for novel applications. The development of a Python library for modal analysis represents the first robust and reliable open-source solution in this domain.
-\subsubsection{Defining a clear Aim and realistic Objectives}\label{sec:intro-scope-aimsobjs}
+\subsection{Defining a clear Aim and realistic Objectives}\label{sec:intro-scope-aimsobjs}
 This project is part of a broader development initiative aimed at developing and providing modal-analysis open-source software, making it essential to establish a clear aim that outlines specific objectives and goals. Accordingly, this project contributes to the initiative by integrating and testing the polyreference least-squares complex frequency domain modal parameter estimator (pLSCF, or PolyMAX{\copyright} commercially) in a Python library. Modal Analysis assists in engineering design decisions for compliance standards, and various research contexts, such as structural health/condition monitoring, and system identification. The software aims reduce uncertainty in data interpretation, allowing engineers and researchers to direct their focus on efficient experimental design and testing. This aim can be effectively achieved through the following objectives, which provide a structured approach to achieving a full implementation of pLSCF in the library. 
 
 \begin{itemize}
@@ -163,7 +164,241 @@ This project is part of a broader development initiative aimed at developing and
 % \end{itemize}
 
 
-\section{Algorithm Development}\label{sec:methods}
+\chapter{Software Development}\label{sec:methods}
+{\color{red} insert introductory paragraph to this chapter}
+
+\section{Modal Analysis Algorithms: mathematical overview}\label{sec:methods-modal}
+
+{\color{red} insert something to do with modal curvefitting}
+
+\subsection{Frequency Response Functions and \emph{poles}}\label{sec:methods-modal-frf}
+The process for obtaining the modal parameters presented in Section \ref{sec:intro-modal-maths} represents a complete solution to the system depicted in Figure \ref{fig:ndof-chain} under unforced conditions. In practical applications, however, an input force is applied to elicit the system response from which the modal parameters are then derived. The response of the structure is typically captured using a numeric construct called the Frequency Response Function (FRF). An FRF is a transfer function, which represents the ratio between a structure's response to the input excitation forces in the frequency-domain \cite{Tim_FRF,Tim_Modal_Properties2,fu2001modal}. Revisiting the system's differential equation to include both damping and an external force transforms Equation \ref{eq:k-minus-m} into
+\begin{equation}
+    ([\mathbf{K}]+j\nu[\mathbf{C}] - \nu^2[\mathbf{M}])\mathbf{X} = \mathbf{F}
+\end{equation}
+Where $\nu$ denotes the frequency of the excitation force $\mathbf{F}$, and $\mathbf{X}$ represents the system's response. Consequently, the response can be expressed as
+\begin{equation}
+    \mathbf{X} =  [H(\nu)] \mathbf{F}
+\end{equation}
+with the FRF matrix defined as $H(\nu) = ([\mathbf{K}]+j\nu[\mathbf{C}] - \nu^2[\mathbf{M}])^{-1}$. According to the derivation provided in Appendix \ref{sec:damped-mdof-frf}, the FRF correlating the $i^{th}$ output to the $j^{th}$ input is represented using the system's modal parameters as
+\begin{equation}\label{eq:frf-modal-model}
+    H_{ij}(\nu) = \frac{X_i}{F_j} = \sum_{k=1}^{N}(\frac{\varphi_{ik}\varphi_{jk}}{\lambda^2_{k}-\nu^2}) 
+\end{equation}
+In the free vibration analysis of a damped system, the eigenvalue problem yields the system poles, which are complex numbers encapsulating both the natural frequencies and damping ratios. In the undamped case, these poles reduce to the natural frequencies of the system (set $\zeta = 0$). For each mode, the conjugate pair of poles is given by
+\begin{equation}
+    \lambda_i,\lambda_i^* = -\zeta_i\omega_i \pm j\omega_i\sqrt{1-\zeta_i^2}
+\end{equation}
+allowing the natural frequencies and damping ratios to be determined from
+\begin{equation}
+    \begin{aligned}
+        \omega_i &= |\lambda_i|\\
+        \zeta_i &= \frac{\mathfrak{R} (\lambda_i)}{\omega_i}
+    \end{aligned}
+\end{equation}
+
+In practice, most deterministic modal analysis algorithms yield a set of system poles that encapsulate the structure's dynamic characteristics. These poles are evaluated against specific stability criteria to determine their physical relevance. Stable poles, which meet the required conditions, represent valid dynamic modes, while unstable poles may indicate unphysical results or simply artefacts of overfitted models.
+
+\subsubsection{Stabilisation Diagrams}\label{sec:methods-modal-frf-stabilization}
+
+Practitioners typically assess the stability of poles using a stabilisation diagram. An example stabilisation plot is shown in Figure \ref{fig:stab-example}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Figures/stabilisation-example.png}
+    \caption{Stabilisation diagram for a 10 degree-of-freedom oscillator, for model orders between 1 and 30. Poles are marked as 'X' on the plot.\\ $H_{11}$ denotes the FRF of $x_1$ and $f_1$, same for $H_{88}$.}
+    \label{fig:stab-example}
+\end{figure}
+
+In modal curve-fitting, algorithms typically fit the analytical functions based on an expected number of modes, or model order. Stabilisation diagrams are used to find the model order which provides the most stable poles based on the stability criteria. This is done by finding the poles for all the model orders within a desired range and plotting the stability diagram. For linear systems, a stability criteria can look like:
+\begin{enumerate}
+    \item $Re(\lambda)<0$, a positive real part of a root means that either the natural frequency or damping ratio are negative, which is unphysical.
+    \item For an arbitrary model order $M$, a pole for a specific mode converges on a natural frequency and damping ratio as $M\rightarrow \infty $, within a certain tolerance interval.
+\end{enumerate}
+
+
+\subsection{Least Squares Complex Exponential (LSCE) Method}\label{sec:methods-modal-lsce}
+
+The LSCE method is a time-domain modal curve-fitting algorithm that correlates the \textbf{I}mpulse \textbf{R}esponse \textbf{F}unction (FRF in the time-domain) of a multi-degree-of-freedom system with its poles and modal residues using a complex exponential. An autoregressive (AR) model is subsequently constructed, and its solution produces a polynomial whose roots correspond to the system's complex poles \cite{Guillaume1998,fu2001modal}. Although the LSCE method was quite popular due to its wide range of applicability, it had a certain number of drawbacks, which motivated the need for better methods;
+\begin{itemize}
+    \item Although it is polyreference in nature, it does not always perform well with a large number of references (input excitation)
+    \item The method is not well suited for noisy data, which results in unclear stabilisation plots, and inaccuracy in modal parameter estimation.
+\end{itemize}
+
+% \begin{itemize}
+%     \item first least squares modal analysis algorithm.
+%     \item time domain though
+%     \item makes a LOT of poles
+% \end{itemize}
+ 
+\subsection{Least Squares Complex Frequency Domain}\label{sec:methods-modal-lscf}
+
+A new method that counters the drawbacks of the LSCE method was proposed, a frequency-domain implementation of the method. The LSCF method uses a common denominator transfer function model, to fit a weighted least-squares estimate FRF to measured FRF data \cite{Guillaume1998,Guillaume2003}.
+\begin{equation}
+    H_{ij}(\omega) = \frac{N_{ij}(\omega)}{d(\omega)}
+\end{equation}
+Where $d$ is a denominator polynomial, and $N$ is a numerator matrix polynomial. Finding a cost function, and solving a set of normal equation yields the polynomial coefficients for the denominator, similar to LSCE, the roots of that polynomial represent the complex poles of the system. The LSCF method offers multiple benefits to the LSCE:
+\begin{itemize}
+    \item The use of a weighted regression, which eliminates the effects of noise in the measurement chain, by favouring data points with less variance.
+    \item The LSCF method provides "fast stabilising" diagrams, i.e. the poles converge quicker. A comparison of a stabilisation diagram from both LSCE and LSCF is showcased in Figure \ref{fig:stab-lsce-vs-lscf}.
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figures/lsce-stab.png}
+        \caption{ }
+        \label{fig:lsce-stab}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.46\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Figures/lscf-stab.png}
+        \caption{ }
+        \label{fig:lscf-stab}
+    \end{subfigure}
+    \caption{Stabilisation Diagrams from LSCE time-domain algorithm (a), and LSCF frequency domain algorithm (b) from Guillaume et al. \cite{Guillaume2003}. Stable poles are marked as black 's' on chart, while spurious or unstable poles are marked in green.}
+    \label{fig:stab-lsce-vs-lscf}
+\end{figure}
+
+\subsection{The polyreference implementation of LSCF}\label{sec:methods-modal-polymax}
+% By closely examining the derivation of the LSCF method proposed by Guillaume et al. in \cite{Guillaume1998,Guillaume2003}, it is apparent that the method isn't inherently polyreference, in practice, this means the algorithm individually performs the fit for each input-output pair. At large numbers of inputs and outputs, this becomes computationally taxing, which prompted the need for a polyreference implementation. This polyreference LSCF method 'PolyMAX'  was proposed by Peeters et al. in \cite{Peeters2004_polymax,Peeters2004_polymaxAEROSPACE,Peeters2005_polymaxOMA,Peeters2004_CHALLENGES}. The main benefits of using the polyreference implementation of the LSCF method were the computational efficiency, closely spaced modes can be separated, and the use of the Singular Value Decomposition of the modal residues was made redundant, this will be discussed in depth in Section \ref{sec:lsfd}.
+
+
+By closely examining the derivation of the LSCF method proposed by Guillaume et al. in \cite{Guillaume1998,Guillaume2003}, it is apparent that the method isn't inherently polyreference. In practice, this means the algorithm fits each input-output pair individually, a process that becomes computationally taxing when the number of inputs and outputs is large. This inefficiency motivated the development of a polyreference implementation. Peeters et al. proposed such an implementation, known as 'PolyMAX' \cite{Peeters2004_polymax,Peeters2004_polymaxAEROSPACE,Peeters2005_polymaxOMA,Peeters2004_CHALLENGES}. The polyreference LSCF (pLSCF) method offers several key benefits: it enhances computational efficiency, enables the separation of closely spaced modes, and eliminates the need for the Singular Value Decomposition of the modal residues. The last advantage is discussed in depth in Section \ref{sec:lsfd}. 
+
+The pLSCF method adopts a right matrix fractional polynomial model for fitting measured FRF data, the following is a brief overview of the algorithms process, a full derivation is available in \ref{sec:POLYMAX-DERIVATION}:
+\begin{equation}
+    [H(\omega)] = [N(\omega)][D(\omega)]^{-1}
+\end{equation}
+Such that $H(\omega) \in\mathbb{C}^{N_{outputs} \times N_{inputs}} $ is the FRF matrix, where $D(\omega)\in \mathbb{C}^{N_{inputs} \times N_{inputs}}$, is the denominator matrix polynomial, and $N(\omega) \in \mathbb{C}^{N_{outputs} \times N_{inputs}}$, is the numerator matrix polynomial. The rows corresponding to each output $o$ in the FRF matrix can be represented as such:
+
+\begin{equation}
+    \left \langle H_o(\omega) \right \rangle = \left \langle N_o(\omega) \right \rangle [D(\omega)]^{-1}
+\end{equation}
+
+The row vector numerator polynomial for the $o^{th}$ output, and the denominator matrix polynomial are defined in terms of a polynomial basis function, $\Omega(\omega)$, and their respective polynomial coefficients, $\beta$ and $\alpha$ as such:
+
+\begin{equation}
+    \left \langle N_o(\omega) \right \rangle  = \sum_{r=1}^{p} \Omega_r(\omega) \left \langle \beta_{or}(\omega) \right \rangle
+\end{equation}
+\begin{equation}
+    [D(\omega)] = \sum_{r=1}^{p} \Omega_r(\omega)[\alpha_r]
+\end{equation}
+
+With the polynomial basis function $\Omega_r(\omega) = e^{j\omega\Delta tr}$. Although not initially obvious as polynomials with conventional form $p(x) = c_0 +c_1x +c_2x^2 +\dots + c_nx^n$, the basis functions are expressed in the $s$-domain where $s = e^{j\omega\Delta t}$. The polynomial coefficients, $\alpha_r \in \mathbb{R}^{N_{inputs}\times N_{inputs}}$ and $\beta_{or} \in \mathbb{R}^{1 \times N_{inputs}}$, are assembled into matrix form.
+
+\begin{flalign}
+    \theta = \begin{pmatrix}
+        \beta_0\\
+        \beta_1\\
+        \beta_2\\
+        \dots\\
+        \beta_{N_{o}}\\
+        \alpha
+    \end{pmatrix} \in \mathbb{R}^{(N_{outputs}+N_{inputs})(p+1)\times N_{inputs}} &&
+\end{flalign}
+
+The weighted nonlinear least squares error is defined by the difference of the model FRF, $H(\omega_k)$, and the measured FRF, $\hat{H}(\omega_k)$, as
+\begin{equation}
+    \epsilon_{o}^{NLS} (\theta,\omega_k) = w_o(\omega_k)(H_o(\omega_k)-\hat{H}_o(\omega_k))
+\end{equation}
+This error produces the nonlinear least squares cost function.
+\begin{equation}
+    l^{NLS}(\theta) = \sum_{o=1}^{N_{out}}\sum_{k=1}^{N_f}\mathbf{tr}\{(\epsilon_{o}^{NLS} (\theta,\omega_k))^H \epsilon_{o}^{NLS} (\theta,\omega_k)  \}
+\end{equation}
+
+Where, $\bullet^H$ is the Hermitian transpose of a matrix, and $\mathbf{tr}\{\bullet\}$ is its trace. A subsequent linearisation is performed to approximate this least squares problem, through right-multiplying the error term by the denominator polynomial $D$. The linearisation results in a cost function in terms of the polynomial coefficients:
+\begin{equation}\label{eq:linear-cost-function}
+    l^{LS}(\theta)=\mathbf{tr}\{\theta^TJ^HJ\theta\}
+\end{equation}
+In Equation \ref{eq:linear-cost-function}, the term $J$ is the Jacobian matrix, which contains values relating to the frequency content, "x-axis", of the measurement and the response, "y-axis", of the measurement. Minimising the cost function gives the normal equation:
+\begin{equation}
+    2Re(J^HJ)\theta = 0
+\end{equation}
+Polynomial coefficients, $\alpha$ and $\beta$ are obtained by imposing a constraint on the system equations and solving the resulting linear system $\mathbf{A}\cdot \mathbf{x} = \mathbf{B}$. When fitting theoretical transfer functions to measured data, the mathematical tools themselves rarely present difficulties; indeed, extracting a polynomial from FRF measurements is straightforward using the pLSCF method. The true challenge lies in constructing a model that remains physically meaningful.  Ultimately, pLSCF seeks to determine modal parameters via the system poles. One must return to the fundamental definition of a system pole — the frequency at which the response becomes infinite — and thus enforce the condition that the denominator polynomial equals zero. It is quickly apparent that the poles are the roots of the polynomial $D$. Using the coefficients of the denominator polynomial, the roots can be found using the so-called companion matrix. The companion matrix of a matrix polynomial can be defined as:
+\begin{equation}
+    C = \begin{pmatrix}
+        0 & I &\dots & 0 & 0 \\
+        0 & 0 &I & \dots & 0 \\
+        \dots & \dots & \dots & \dots & \dots \\
+        0 & 0 &\dots & 0 & I \\
+        -\alpha_0^T & -\alpha_1^T &-\alpha_2^T& \dots -\alpha_{p-2}^T & -\alpha_{p-1}^T
+    \end{pmatrix}
+\end{equation}
+An interesting property of companion matrices is that its eigenvalues are the roots of its polynomial, as such, the poles and the modal participation factors can be found using an eigendecomposition of the companion matrix.
+\begin{equation}
+    CQ = \Lambda Q
+\end{equation}
+Where $Q$ is the eigenmatrix, and contains the modal participation factors, and $\Lambda$ is a diagonal matrix which has the system's discrete time poles on its diagonal entries. A model of polynomial order $p$ will give $N_{inputs}\cdot p$ number of poles and $Q\in\mathbb{C}^{N_{inputs}\cdot p \times N_{inputs}\cdot p}$ participation factors.
+
+\subsection{Modeshape estimation using LSFD}\label{sec:lsfd}
+In practice, modeshapes are estimated using the Least Squares Frequency Domain algorithm, which is a linear regression designed to find the modal residues, a product of the modeshapes and the participation factors, and the upper and lower residuals, values which account for non-ideal vibratory behaviour. The LSFD fits a new model to measured FRF data as shown in Equation \ref{eq:lsfd-model}.
+
+\begin{equation}\label{eq:lsfd-model}
+    H(s) = \sum_{m=1}^{N_{modes}}\left( \frac{\Psi_m\cdot L_{m}^{T}}{s - \lambda_m}+\frac{\Psi_{m}^{*}\cdot L_{m}^{H}}{s - \lambda_{m}^{*}} \right) +\frac{\mathbf{LR}}{s^2} + \mathbf{UR}
+\end{equation}
+Where $\Psi_m$ is the modeshape vector for the mode $m$, $L_{m}$ is the mode's participation factor, $\mathbf{LR}$ and $\mathbf{UR}$ are the upper and lower residuals, and $s = j\omega$.
+
+\section{Implementing pLSCF}\label{sec:methods-softwaredev}
+
+
+For all these subsections follow this process:
+\begin{itemize}
+    \item The problem/importance of this.
+    \item How it was done.
+    \item What this resulted in. and what that means for the user/engineer. 
+\end{itemize}
+
+
+\subsection{Project environment: software development practices}\label{sec:methods-softwaredev-git}
+
+The overarching aim of the project is the development of Python library for structural dynamics and modal analysis. However, it is impractical for one individual to develop a comprehensive and robust library for such a large scope, and hence the focused aim of implementing and testing one popular algorithm. The library is being developed collaboratively by academics, and students as part of a large coordinated effort. In such large-scale projects, effective management is needed to prevent disruptive mishaps to the codebase and to check that the contributors are using an up-to-date version of the source code. Version control systems such as Git  
+
+\begin{itemize}
+    \item Involving many people. = problem.
+    \item Using Git, and an Agile environment of Continuous improvement, testing, and integration.
+    \item Results in a more streamlined process which makes development quicker, and more efficient.
+\end{itemize}
+
+\subsection{Software Testing}\label{sec:methods-softwaredev-test}
+
+\begin{itemize}
+    \item Consistently working algorithms. = not always guaranteed.
+    \item Explain the unit test, and the unit testing performed for the functions. (use an intuitive one like the companion matrix)
+    \item this means that by having a standardized input-output system, one can then optimize the algorithm, make it quicker, or more accessible, and have that benchmark ready to check that the algorithm is correctly functioning.
+    \item then go into integration testing. after all the unit tests pass individually, you'd have to then test that they all work in unison.
+\end{itemize}
+
+\subsection{Optimisation: Time complexities}\label{sec:methods-softwaredev-optimization}
+
+\begin{itemize}
+    \item Briefly describe what a time and space complexity using big O notation.
+    \item Small measure of what the performance might look like, and not indicative of how much time.
+    \item Big datasets to analyse = big computation time and ram requirements = big problem if ur testing an entire plane or bridge.
+    \item using Numpy broadcasting helps remove overhead.
+    \item Using BLAS packages also helps, as this goes to the bare-bones of the machine and directly uses the processing unit.
+\end{itemize}
+
+\subsection{Code readability and usability}\label{sec:methods-softwaredev-pep8}
+\begin{itemize}
+    \item Written code is not always understandable. It is a known that code is more often read than made.
+    \item Docstrings for functions, and classes, and sometimes files if the code there doesn't class as any.
+    \item this means that the reader has:
+    \begin{itemize}
+        \item An explanation of what each little thing does.
+        \item A scientific reference like a journal publication or maybe just an online article.
+    \end{itemize}
+\end{itemize}
+\begin{itemize}
+    \item PEP-8 for naming conventions, using capitalization, underscores etc.
+    \item makes it seem professional, and also other developers can sort of understand some thought processes better.
+\end{itemize}
+
+
+
+\pagebreak
 \textbf{maths-y bit}
 
 \begin{itemize}
@@ -172,7 +407,7 @@ This project is part of a broader development initiative aimed at developing and
     \item logic/control flow
     \item complexities and big O notation
     \item unit testing and integration testing.
-    \item version control.
+    \item Version control.
 \end{itemize}
 
 
@@ -196,114 +431,135 @@ This project is part of a broader development initiative aimed at developing and
 
 
 
-\section{Results}
+\chapter{Results}
+
+\section{Simulated systems: 10 degree-of-freedom oscillator}
+
+To benchmark pLSCF, a number of lumped mass systems, as well as experimental data was used. Consider a 10 degree-of-freedom oscillator, with physical parameters: 
+\[\mathbf{M} = \mathbf{diag}( 1,2,3,4,5,1,2,3,4,5) kg\]
+{\footnotesize
+\[
+\mathbf{K} = \begin{pmatrix}
+    50 & -30 &   0 &   0 &   0 &   0 &   0 &   0 &   0 &   0 \\
+   -30 &  70 & -40 &   0 &   0 &   0 &   0 &   0 &   0 &   0 \\
+     0 & -40 &  50 & -10 &   0 &   0 &   0 &   0 &   0 &   0 \\
+     0 &   0 & -10 &  70 & -60 &   0 &   0 &   0 &   0 &   0 \\
+     0 &   0 &   0 & -60 &  80 & -20 &   0 &   0 &   0 &   0 \\
+     0 &   0 &   0 &   0 & -20 &  50 & -30 &   0 &   0 &   0 \\
+     0 &   0 &   0 &   0 &   0 & -30 &  70 & -40 &   0 &   0 \\
+     0 &   0 &   0 &   0 &   0 &   0 & -40 &  90 & -50 &   0 \\
+     0 &   0 &   0 &   0 &   0 &   0 &   0 & -50 &  80 & -30 \\
+     0 &   0 &   0 &   0 &   0 &   0 &   0 &   0 & -30 &  70
+  \end{pmatrix} kN\cdot m^{-1}
+\]
+}
+\[\mathbf{C} = \mathbf{K}\cdot 10^{-5} Ns\cdot m^{-1} \]
+
+Following the calculation of the modal properties, the analytical FRF is found using equation \ref{eq:frf-modal-model}. This synthetic data is passed through the implemented pLSCF algorithm and a stabilisation diagram is constructed for a maximum model order of 30, Figure \ref{fig:10-dof-stabilisation-clean} showcases the diagram.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = \linewidth]{Figures/10-dof-clean-stabilisation.png}
+    \caption{Stabilisation of the direct FRF of $x_3$, stability criteria used (1) tolerance of 0.2rad/s in natural frequency, and 0.02 in damping ratio for increasing model order. (2) $Re(\lambda)<0$}
+    \label{fig:10-dof-stabilisation-clean}
+\end{figure}
 
 \begin{itemize}
-    \item plscf on simulated modal data.
-    \begin{itemize}
-        \item clean
-        \item noisy
-        \item slightly nonlinear data (mimo where $H_{ij} \approx H_{ji}$ but $H_{ij} \neq H_{ji}$)
-        \item high dofs.
-    \end{itemize}
-    \item plscf on actual lab data.
-    \item adam's plscf vs siemens lms polymax on same dataset.
-    \item interpretation of stabilization diagram.
+    \item Describe that this simulation was done using the equations from the whatever section.
+    \item Stabilisation plot.
+    \item Modeshape plot.
+    \item Compare both to theoretically calculated values.
+\end{itemize}
+
+\subsection{Introducing noise into the measurements}
+
+\begin{itemize}
+    \item Introduce Gaussian (normal distribution) white noise into the system.
+    \item Again, stabilisation plot and modeshapes.
+    \item Compare both to theoretical values again.
+\end{itemize}
+
+\section{Experimentally tested structure}
+
+\begin{itemize}
+    \item Either use MEC444, or Hawk Data.
+    \item Showcase how quick it is idk.
+\end{itemize}
+
+\chapter{Discussion, and Potential Improvement}
+
+\begin{itemize}
+    \item Now that polymax is implemented, now do we publish.
+    \item A "beta" version can be published under the provision that there will be lots of improvement.
+    \item More modal analysis algorithms that are for specific cases etc.
+    \item Better user-friendliness/API/frontend.
 \end{itemize}
 
 
-\begin{lstlisting}[style={Python}]
-import numpy as np
-
-def _make_polynomial_basis_fcn(
-    polynomial_order: int, frequency_vector: np.ndarray, sampling_frequency: float
-):
-    """Function that creates a Polynomial Basis Function matrix
-
-    Args:
-        polynomial_order (int): Order of the polynomial created. i.e. if 2 then P(x) = a0 * x^0  +  a1 * x^1 + a2 * x^2
-        in the case of pLSCF, Omega(w) = P(e^{jw _delta t})
-
-        frequency_vector (np.ndarray): vector of frequencies measured or simulated, can be hz or rads-1.
-        MUST be either a row or column vector/1D Array
-
-    Returns:
-        Polynomial basis function matrix.
-    """
-    # the polynomial basis function is actually the vandermonde matrix for the polynomials, A and B.
-    dt = 1 / sampling_frequency  # Sampling rate
-    s = np.exp(1.j*frequency_vector*dt) # this is the "x" in the polynomial
-    return np.vander(x=s,N=polynomial_order+1,increasing=True)    
-\end{lstlisting}
-
-\pagebreak
 
 
+% \pagebreak
+% Consider the Jacobian matrix, for a system with $n_{outputs} = 3$:
+% \begin{equation}
+%     J = \begin{pmatrix}
+%         X_1 & 0 & 0 & Y_1\\
+%         0 & X_2& 0 & Y_2\\
+%         0 & 0 & X_3 & Y_3
+%     \end{pmatrix}    
+% \end{equation}
+
+% \begin{equation}
+%     J^HJ = \begin{pmatrix}
+%         X_{1}^HX_1 & 0 & 0 & X_{1}^HY_1\\
+%         0 & X_{2}^HX_2 & 0 & X_{1}^HY_2\\
+%         0 & 0 & X_{2}^HX_2 & X_{1}^HY_3\\
+%         X_{1}^*Y_{1}^T & X_{2}^*Y_{2}^T & X_{3}^*Y_{3}^T & Y_{1}^HY_1+Y_{2}^HY_2+Y_{3}^HY_3\\
+%     \end{pmatrix}
+% \end{equation}
+% if:
+% $$    R_o = Re(X_{o}^HX_o) $$
+% $$    S_o = Re(X_{o}^HY_o)$$
+% $$    T_o = Re(Y_{o}^HY_o)$$
+% \begin{equation}
+%     2Re(J^HJ)\theta = 2Re\begin{pmatrix}
+%         X_{1}^HX_1 & 0 & 0 & X_{1}^HY_1\\
+%         0 & X_{2}^HX_2 & 0 & X_{1}^HY_2\\
+%         0 & 0 & X_{2}^HX_2 & X_{1}^HY_3\\
+%         X_{1}^*Y_{1}^T & X_{2}^*Y_{2}^T & X_{3}^*Y_{3}^T & Y_{1}^HY_1+Y_{2}^HY_2+Y_{3}^HY_3\\
+%     \end{pmatrix}
+%     \begin{pmatrix}
+%         \beta_1\\
+%         \beta_2\\
+%         \beta_3\\
+%         \alpha
+%     \end{pmatrix} 
+% \end{equation}
+% \begin{equation}
+%     = 
+%     2 \begin{pmatrix}
+%         R_1\beta_1+S_1\alpha\\
+%         R_2\beta_2+S_2\alpha\\
+%         R_3\beta_3+S_3\alpha\\
+%         S_{1}^T\beta_1+S_{2}^T\beta_2+S_{3}^T\beta_3 +(T_1+T_2+T_3)\alpha 
+%     \end{pmatrix}
+% \end{equation}
+
+% which corresponds to the solutions in the normal equations in terms of alpha and beta.
 
 
+% \begin{equation}
+%     l^{LS}(\theta) = tr\{\theta^TRe(J^HJ)\theta\}
+% \end{equation}
 
-Consider the Jacobian matrix, for a system with $n_{outputs} = 3$:
-\begin{equation}
-    J = \begin{pmatrix}
-        X_1 & 0 & 0 & Y_1\\
-        0 & X_2& 0 & Y_2\\
-        0 & 0 & X_3 & Y_3
-    \end{pmatrix}    
-\end{equation}
+% from vector calculus, if
+% \begin{equation}
+%     \mathbf{f}= \mathbf{x^TBx}
+% \end{equation}
+% then,
+% \begin{equation}
+%     \frac{\partial \mathbf{f}}{\partial \mathbf{x}} = 2\mathbf{Bx}
+% \end{equation}
 
-\begin{equation}
-    J^HJ = \begin{pmatrix}
-        X_{1}^HX_1 & 0 & 0 & X_{1}^HY_1\\
-        0 & X_{2}^HX_2 & 0 & X_{1}^HY_2\\
-        0 & 0 & X_{2}^HX_2 & X_{1}^HY_3\\
-        X_{1}^*Y_{1}^T & X_{2}^*Y_{2}^T & X_{3}^*Y_{3}^T & Y_{1}^HY_1+Y_{2}^HY_2+Y_{3}^HY_3\\
-    \end{pmatrix}
-\end{equation}
-if:
-$$    R_o = Re(X_{o}^HX_o) $$
-$$    S_o = Re(X_{o}^HY_o)$$
-$$    T_o = Re(Y_{o}^HY_o)$$
-\begin{equation}
-    2Re(J^HJ)\theta = 2Re\begin{pmatrix}
-        X_{1}^HX_1 & 0 & 0 & X_{1}^HY_1\\
-        0 & X_{2}^HX_2 & 0 & X_{1}^HY_2\\
-        0 & 0 & X_{2}^HX_2 & X_{1}^HY_3\\
-        X_{1}^*Y_{1}^T & X_{2}^*Y_{2}^T & X_{3}^*Y_{3}^T & Y_{1}^HY_1+Y_{2}^HY_2+Y_{3}^HY_3\\
-    \end{pmatrix}
-    \begin{pmatrix}
-        \beta_1\\
-        \beta_2\\
-        \beta_3\\
-        \alpha
-    \end{pmatrix} 
-\end{equation}
-\begin{equation}
-    = 
-    2 \begin{pmatrix}
-        R_1\beta_1+S_1\alpha\\
-        R_2\beta_2+S_2\alpha\\
-        R_3\beta_3+S_3\alpha\\
-        S_{1}^T\beta_1+S_{2}^T\beta_2+S_{3}^T\beta_3 +(T_1+T_2+T_3)\alpha 
-    \end{pmatrix}
-\end{equation}
-
-which corresponds to the solutions in the normal equations in terms of alpha and beta.
-
-
-\begin{equation}
-    l^{LS}(\theta) = tr\{\theta^TRe(J^HJ)\theta\}
-\end{equation}
-
-from vector calculus, if
-\begin{equation}
-    \mathbf{f}= \mathbf{x^TBx}
-\end{equation}
-then,
-\begin{equation}
-    \frac{\partial \mathbf{f}}{\partial \mathbf{x}} = 2\mathbf{Bx}
-\end{equation}
-
-then the normal equation for polymax should be:
-\begin{equation}
-    \frac{\partial l^{LS}}{\partial \theta} = 2Re(J^HJ)\theta
-\end{equation}
+% then the normal equation for polymax should be:
+% \begin{equation}
+%     \frac{\partial l^{LS}}{\partial \theta} = 2Re(J^HJ)\theta
+% \end{equation}
