@@ -1,7 +1,15 @@
 \appendix
+\chapter{Damped Multi-degree-of-freedom systems}
 
-\section{Derivation of p-LSCF modal parameter estimation method}
-\subsection{The right-matrix rational fractional model}
+
+\section{Free Vibration Solution}
+
+\section{Forced Vibration Solution}\label{sec:damped-mdof-frf}
+
+
+
+\chapter{Derivation of p-LSCF modal parameter estimation method}\label{sec:POLYMAX-DERIVATION}
+\section{The right-matrix rational fractional model}
 The polyreference least-squares complex frequency domain method employs a right matrix fractional model to fit MIMO Frequency Response Function measurements into a set of rational polynomial transfer functions:
 \begin{equation}\label{eq:plscf_poly}
     [H(\omega)] = [N(\omega)][D(\omega)]^{-1}
@@ -55,7 +63,7 @@ With the polynomial basis function $\Omega_r(\omega) = e^{j\omega\Delta tr}$. Al
         \alpha
     \end{pmatrix} \in \mathbb{R}^{(N_{outputs}+N_{inputs})(p+1)\times N_{inputs}} &&
 \end{flalign}
-\subsection{Minimizing the sum of the squared residuals}
+\section{Minimizing the sum of the squared residuals}
 The collection of both sets of coefficients into one variable $\theta$, makes performing the least squares problem simpler, in a sense, as it becomes the one unknown in this least squares model. As typical in any fitting method, one must minimize the error between the model and the real or measured value. The nonlinear least-squares error for:\\
 Measured FRF:\hspace{30pt} $\hat{H}_o(\omega_k)$\\
 Model FRF: \hspace{42pt} $H_o(\omega_k)$\\
@@ -76,7 +84,7 @@ In this equation, $\mathbf{tr}\{\bullet\}$ denotes the trace of a matrix, also k
 \begin{equation}\label{eq:tr_cyc_prop}
     \mathbf{tr}\{\mathbf{A}^H\mathbf{B}\} = \mathbf{tr}\{\mathbf{A}\mathbf{B}^H\} = \mathbf{tr}\{\mathbf{B}^H\mathbf{A}\} =\mathbf{tr}\{\mathbf{B}\mathbf{A}^H\} = \sum_{i=1}^{m}\sum_{j=1}^{n}a_{ij}b_{ij}
 \end{equation}
-\subsection{Linearizing the error}
+\section{Linearizing the error}
 One can then obtain the polynomial coefficients through minimizing the cost function in \ref{eq:nls_cost_fn}, by setting the derivative $\frac{\partial l^{NLS}}{\partial \theta}$ equal to zero, however a nonlinear cost function will yield nonlinear derivative equations, (typically called normal equations in linear regression). A subsequent linearization of the cost function can approximate (suboptimally) the least squares problem, this is achieved through right multiplying the cost function with denominator polynomial $\mathbf{D}$. This gives a linear error:
 \begin{equation}\label{eq:lin_error}
     \begin{aligned}
@@ -178,7 +186,7 @@ in which:
     T_o = \mathit{Re}(Y^{H}_o Y_o)
 \end{equation}
 
-\subsection{The \emph{Normal Equations}, and extracting the modal parameters}
+\section{The \emph{Normal Equations}, and extracting the modal parameters}
 The cost function can then be minimized in terms of $\alpha$ and $\beta$ to find the best least-squares fit:
 \begin{equation}
     \begin{aligned}
@@ -255,7 +263,7 @@ A property of the companion matrix $C(p)\in \mathbb{R}^{n\times n}$ is that its 
 \end{equation}
 Where the matrix $[\mathbf{L}]$ is the Eigenmatrix (matrix with columns as eigenvectors), representing the modal participation factors of each mode, and the matrix $\Lambda$ contains the discrete time poles on its diagonal elements. The transpose of a companion matrix, this however does not affect the numerical value of the poles or participation factors [reference proof]. A $p$-order right matrix-fraction polynomial estimation should yield $pN_{in}$ number of poles.
 
-\subsection{Finding the modeshapes using the Least-Squares Frequency Domain (LSFD) method}
+\section{Finding the modeshapes using the Least-Squares Frequency Domain (LSFD) method}
 
 
 This part should be in actual report: When fitting theoretical models to experimental data, the difficulty does not typically lie in the mathematical framework enabling the modelling process. Instead, the challenge is in constructing a model that provides physically meaningful insights. Given that the goal of many modal parameter estimation methods is to find a set of poles which As apparent, it is straightforward to find the polynomial coefficients using measured data. 
