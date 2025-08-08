@@ -18,10 +18,12 @@
 \usepackage{caption}
 \usepackage{listings}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{color}
 \usepackage{animate}
 \usepackage{pgf}
 \usepackage{subcaption}
-
+\usepackage{booktabs}
+\usepackage{multirow}
 % SETTINGS
 
 \setlength{\parindent}{1.5cm}
@@ -49,7 +51,7 @@
         \Large{Report submitted to the University of Sheffield in partial fulfillment of the       
         requirements for the degree of Master of Engineering}\\
         \vspace{10pt}
-        Word Count: 8001
+        Word Count: $\thicksim$ 7500
       }
 
     
@@ -97,10 +99,15 @@
 \lstdefinelanguage{Python}{
   language=Python,
   morekeywords={def, class, import, from, as, if, else, elif, for, while, return, print},
+  literate=
+  {"""}{{\lstinline!"\"\"\"!}}3
+  {'''}{{\lstinline!\'\'\'!}}3,
   sensitive=true,
   comment=[l]\#,
   string=[b]",
-  string=[b]'
+  string=[b]',
+  stringstyle=\color{teal},
+  commentstyle=\itshape\color{gray},
 }
 
 \lstdefinestyle{github-dark}{
@@ -119,6 +126,105 @@
   breaklines=true,
   captionpos=b,
   tabsize=2,
+}
+
+
+\definecolor{qlBackground}{HTML}{F6F6F6}
+\definecolor{qlForeground}{HTML}{333333}
+\definecolor{qlComment}{HTML}{6A9955}
+\definecolor{qlKeyword}{HTML}{0000FF}
+\definecolor{qlString}{HTML}{A31515}
+\definecolor{qlIdentifier}{HTML}{001080}
+\definecolor{qlNumber}{HTML}{098658}
+\definecolor{qlType}{HTML}{267f99}
+\definecolor{qlPunctuation}{HTML}{393A34}
+
+\lstdefinestyle{quietlight}{
+  backgroundcolor=\color{qlBackground},
+  basicstyle=\ttfamily\small\color{qlForeground},
+  commentstyle=\color{qlComment}\itshape,
+  keywordstyle=\color{qlKeyword}\bfseries,
+  stringstyle=\color{qlString},
+  identifierstyle=\color{qlIdentifier},
+  numberstyle=\color{qlNumber},
+  emphstyle=\color{qlType},
+  moredelim=[s][\color{qlPunctuation}]{\{}\{,   % punctuation around braces
+  moredelim=[s][\color{qlPunctuation}]{\}}{\,},
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=5pt,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{gray!50},
+  tabsize=2,
+  captionpos=b,
+  upquote=true
+}
+
+\lstset{%
+  basicstyle=\ttfamily,
+  literate={"}{{\ttfamily\char`\"}}1
+}
+
+\lstdefinelanguage{Pseudo}{
+  keywords={FUNCTION, RETURN, FOR, IF, THEN, END, ENDIF, ENDFOR},
+  sensitive=true,
+  morecomment=[l]{\#},
+  morestring=[b]"
+}
+\lstdefinestyle{pseudocode}{
+  language=Pseudo,
+  frame=single,
+  backgroundcolor=\color{gray!10},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\itshape\color{gray},
+  stringstyle=\color{teal},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=8pt,
+  tabsize=2,
+  showstringspaces=false,
+  breaklines=true,
+  captionpos=b
+}
+
+\newcounter{nalg}[chapter] % defines algorithm counter for chapter-level
+\renewcommand{\thenalg}{\thechapter .\arabic{nalg}} %defines appearance of the algorithm counter
+\DeclareCaptionLabelFormat{algocaption}{Algorithm \thenalg} % defines a new caption label as Algorithm x.y
+
+\lstnewenvironment{algorithm}[1][] %defines the algorithm listing environment
+{   
+    \refstepcounter{nalg} %increments algorithm number
+    \captionsetup{labelformat=algocaption,labelsep=colon} %defines the caption setup for: it ises label format as the declared caption label above and makes label and caption text to be separated by a ':'
+    \lstset{ %this is the stype
+        mathescape=true,
+        frame=tB,
+        numbers=left, 
+        numberstyle=\tiny,
+        basicstyle=\scriptsize, 
+        keywordstyle=\color{black}\bfseries\em,
+        keywords={,input, output, return, datatype, function, in, if, else, foreach, while, begin, end, } %add the keywords you want, or load a language as Rubens explains in his comment above.
+        numbers=left,
+        xleftmargin=.04\textwidth,
+        #1 % this is to add specific settings to an usage of this environment (for instnce, the caption and referable label)
+    }
+}
+{}
+
+
+
+\setlength{\fboxsep}{1pt}   
+
+% \newcommand{\inlinecode}[1]{%
+%   \colorbox{gray!10}{\ttfamily\small #1}%
+% }
+
+% or, if you’d also like a thin border:
+\newcommand{\inlinecode}[1]{%
+  \fcolorbox{gray!50}{gray!10}{\ttfamily\small #1}%
 }
 
 
@@ -152,22 +258,5 @@
 \addcontentsline{toc}{chapter}{References}
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 \end{document}
