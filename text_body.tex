@@ -8,6 +8,46 @@ In linear structural dynamics, Modal Analysis is universally recognized as the p
 
 Fundamentally, modal analysis is the decomposition of the complex oscillatory behaviour of structures into smaller, more intuitive components called modes. Each mode is a mathematical representation of a specific vibration pattern associated with a natural frequency, the frequency (or set of) at which a system tends to oscillate when displaced, and a corresponding mode shape, a vector which describes the relative movement among the degrees-of-freedom. The damping ratio, a unitless parameter, quantifies the energy dissipation of the system for each mode. The modal properties are defined by the interaction of the system's physical properties, its mass, stiffness, and damping. These inherent properties guide the system's vibration when subject to external forcing or initial displacements or velocities.
 
+\subsection{Modal Analysis in practice, academia, and industry}\label{sec:intro-modal-applications}
+
+There are two mainstream modal analysis procedures which address the need for studying the modal properties:  Numerical Modal Analysis, and Experimental Modal Analysis, often referred to as Modal Testing. Numerical Modal Analysis is used to simulate dynamic behaviour when modal testing is unimplementable or unnecessary. It involves discretization — typically using finite element modelling — and solving the resulting equations of motion under appropriate initial and boundary conditions. Numerical Modal Analysis offers a faster means of evaluating simpler systems without the need for experimental testing. 
+
+In contrast, Modal Testing relies on the principle that, in a mostly linear system, the same modal parameters used to predict the system's response can be obtained from a measurement of that response. It utilizes various experimental methods such as shaker testing or impact testing to gather response data using sensors like accelerometers or laser vibrometers. One would pair the experimental set-up with computational algorithms to extract the modal parameters from the test data. An example set-up for a modal test using a shaker is showcased in Figure \ref{fig:shaker-test}. Modal Testing is often the first step for applications such validating models, or measuring the effect of environmental and operational conditions on structures. This underscores why modal testing is typically preferred and more prevalent, as it directly captures the system's response in a way that numerical modal analysis is unable to. Due to the widespread adoption of modal testing in structural dynamics, the term modal analysis is generally interpreted as modal testing, and due to the nature of the work in this report, the term modal analysis will also be referring to modal testing.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.75\linewidth]{Figures/Shaker-test.png}
+    \caption{Typical electrodynamic shaker experimental set up, adapted from He \& Fu \cite{fu2001modal}}
+    \label{fig:shaker-test}    
+\end{figure}
+
+In modern research areas such as structural health monitoring (SHM)—where the primary objective is to observe changes in an asset's structural condition through continuous monitoring—modal analysis is frequently employed because a system's modal parameters are highly sensitive to its physical state \cite{WordenSHM2013}. Natural frequencies and mode shapes are considered damage-sensitive features; whether changes result from cracks, corrosion, environmental effects, or fatigue, any structural alteration will modify the physical parameters and lead to a quantifiable change in the modal parameters. By statistically comparing a structure's current modal parameters with its baseline measurements, taken when the structure is in good condition, early signs of damage and degradation can be detected. This approach enables the effective monitoring of essential infrastructure, including bridges \cite{Bunce2024,Maeck2001,Peeters2000}, buildings \cite{Saeed2024}, and wind turbines \cite{Bull2021,Tsiapoki2024}, making modal analysis an invaluable tool for ensuring the safety and longevity of many everyday structures. See Figure \ref{fig:z24-bridge} for examples of modal testing in SHM contexts for civil and structural engineering.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.75\linewidth]{Figures/z24 modeshapes color.png}
+    \caption{Model analysis results of the Z24 bridge where Maeck et al. in \cite{Maeck2001,MAECK2003,Peeters2000} performed an experimental campaign on a bridge in Switzerland to benchmark vibration based techniques for damage identification}
+    \label{fig:z24-bridge}
+\end{figure}
+
+Civil and structural engineering practices apply modal analysis to predict responses to seismic, wind, wave, and traffic loads—thereby enhancing safety and extending service life \cite{Rainieri2014,Archila2013,Reynolds2009,Peeters2000}.
+In automotive applications, it's used to optimize lightweight, high-strength vehicles and improve NVH performance (e.g., gear noise, road harshness) \cite{Glen2003nvh,Nissan1975,Martz1979,French1998,Liu2020}, and aerospace relies on it to balance structural integrity with weight savings through vibration control and wind/fluid load assessment \cite{fu2001modal,ewins2000modal,wright2008aeroelastics,Chamberlain2017,saffry2014}. See Figure \ref{fig:f16-test} for a modal test on a model aircraft.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Figures/F16 test.png}
+    \caption{Peeters et al. \cite{F16gvt2011}, performed modal tests on wind-tunnel model and full sized F16 aircraft}
+    \label{fig:f16-test}
+\end{figure}
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.75\linewidth]{Figures/hawk-tuah.jpg}
+%     \caption{BAE systems Hawk T1A aircraft, obtained from \cite{Alexander2024}}
+%     \label{fig:hawk-tuah}
+% \end{figure}
+
+
+
+\subsection{Mathematical Basis}
 The standard procedure for modal analysis begins with forming the equations of motion (EOMs) that represent a system, typically, second order matrix differential equations. Consider a system with an arbitrary number $N$, degrees-of-freedom (DOFs) as shown in Figure \ref{fig:ndof-chain}. Using Newton's second law \cite{thornton2014classical},
  $$\sum F_i = m_i\ddot{\mathbf{x}}_i$$ 
  Where $F_i$ is a force acting on the $i$-th DOF, $m_i$ is the mass, and $\mathbf{x}_i$ is the coordinate, or alternatively the Euler-Lagrange equation as such \cite{thornton2014classical}: 
@@ -26,7 +66,7 @@ Where $q_i$ is a generalized coordinate (take $q_i = x_i$ for this system), $T$ 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{Figures/n-dof-chain-sys.png}
-    \caption{A "lumped-mass" system of $N$ degrees-of-freedom}
+    \caption{A   ''lumped-mass  '' system of $N$ degrees-of-freedom}
     \label{fig:ndof-chain}
 \end{figure}
 
@@ -66,68 +106,33 @@ Rearranging the terms, the equation into takes the general form of an eigenvalue
         [\mathbf{A}]&\Psi = \omega^2\Psi
     \end{aligned}
 \end{equation}
-Here, $\omega^2$ is the eigenvalue of matrix $\mathbf{A}$  — often referred to as an \emph{eigenfrequency} — and $\Psi$ is the corresponding eigenvector representing the mode shape.
+Here, $\omega^2$ is the eigenvalue of matrix $\mathbf{A}$  — often referred to as an \emph{eigenfrequency} — and $\Psi$ is the corresponding eigenvector representing the mode shape. 
 
-% In systems with a finite number of degrees of freedom—often referred to as discrete systems—the modal analysis is performed using the dynamical matrix $[\mathbf{A}]$, which encapsulates the system's inertial and elastic properties. Building upon the discrete case, into systems which are modelled as continuous functions, the physical parameters of the systems are distributed spatially. This results into partial differential equation which governs the motion, where  finite dimensional matrices are then replaced with linear operators. Consequently, an eigenvalue problem is formed differently, in terms of a differential operator, where the eigenvalues are still correspondent to the natural frequency, and the respective eigenfunctions are the modeshapes in the spacial domain.
+The process of reducing the governing equations into eigenvalue problems is mathematically elegant, robust, and applicable to all linear systems. Despite this approach's elegance, its practical applications rarely exist, as real world structures and systems seldom conform to the idealized assumptions of lumped-mass systems. Regardless, the superposition principle that any linear system's motion can be written as a sum of its natural modes remains the cornerstone of modern experimental modal analysis and system-identification techniques. When a structure is excited, its physical coordinates can be expanded as a truncated series of modal contributions. As in practice, the truncation keeps a manageable number of the most significant or contributing modes. Theoretically, this modal sum can reproduce the full measured response \cite{ewins2000modal,fu2001modal,Maia1997}.
 
-In discrete systems, with a finite number of degrees of freedom, the modal analysis is performed using the matrix $[\mathbf{A}]$, which encapsulates the system's inertial and elastic properties. When extending the approach to systems modelled as continuous mediums, the physical parameters are distributed spatially. This results in a partial differential equation that governs the motion, where finite-dimensional matrices are replaced by linear operators. Consequently, an eigenvalue problem is formed in terms of a differential operator, with eigenvalues corresponding to the natural frequencies and the associated eigenfunctions representing the mode shapes in the spatial domain\footnote{An \emph{eigenvector}, or an \emph{eigenfunction}, of a matrix or linear operator defined on some vector/function space is any non-zero vector/function in said space that when multiplied or acted upon by the matrix/linear operator is equivalent to being multiplied by some scalar factor, said scalar factor is referred to as the \emph{eigenvalue}.}. For example this principle applied to transverse vibration of an Euler-Bernoulli beam yields the eigenvalue problem:
-\begin{equation}\label{eq:eigenfunction-beam}
-    \Delta^2Y(x) = \beta^4Y(x)
-\end{equation}
-where $\Delta$ is the Laplacian operator (i.e. second partial derivative in Cartesian coordinate system), and $\beta^4 = \frac{\omega^2}{c^2}$, in which $\omega$ is the natural frequency, and $c^2$ is the ratio of the beam's flexural rigidity and its inertia. \cite{Rao2018,Blevins2015}
 
-In both discrete and continuous cases, the process of reducing the governing equations into eigenvalue problems is mathematically elegant, robust, and applicable to all linear systems. Despite this approach's elegance, its practical applications rarely exist, as real world structures and systems seldom conform to the idealized assumptions of lumped-mass systems or Euler-Bernoulli beams with known boundary conditions. Thus, academics and practitioners are driven to approach modal analysis differently, to compensate for this limitation.
+% In discrete systems, with a finite number of degrees of freedom, the modal analysis is performed using the matrix $[\mathbf{A}]$, which encapsulates the system's inertial and elastic properties. When extending the approach to systems modelled as continuous mediums, the physical parameters are distributed spatially. This results in a partial differential equation that governs the motion, where finite-dimensional matrices are replaced by linear operators. Consequently, an eigenvalue problem is formed in terms of a differential operator, with eigenvalues corresponding to the natural frequencies and the associated eigenfunctions representing the mode shapes in the spatial domain\footnote{An \emph{eigenvector}, or an \emph{eigenfunction}, of a matrix or linear operator defined on some vector/function space is any non-zero vector/function in said space that when multiplied or acted upon by the matrix/linear operator is equivalent to being multiplied by some scalar factor, said scalar factor is referred to as the \emph{eigenvalue}.}. For example this principle applied to transverse vibration of an Euler-Bernoulli beam yields the eigenvalue problem:
+% \begin{equation}\label{eq:eigenfunction-beam}
+%     \Delta^2Y(x) = \beta^4Y(x)
+% \end{equation}
+% where $\Delta$ is the Laplacian operator (i.e. second partial derivative in Cartesian coordinate system), and $\beta^4 = \frac{\omega^2}{c^2}$, in which $\omega$ is the natural frequency, and $c^2$ is the ratio of the beam's flexural rigidity and its inertia. \cite{Rao2018,Blevins2015}
 
-\subsection{Modal Analysis in practice, academia, and industry}\label{sec:intro-modal-applications}
+% In both discrete and continuous cases, the process of reducing the governing equations into eigenvalue problems is mathematically elegant, robust, and applicable to all linear systems. Despite this approach's elegance, its practical applications rarely exist, as real world structures and systems seldom conform to the idealized assumptions of lumped-mass systems or Euler-Bernoulli beams with known boundary conditions. Thus, academics and practitioners are driven to approach modal analysis differently, to compensate for this limitation.
 
-There are two mainstream modal analysis procedures which address this limitation: Numerical Modal Analysis, and Experimental Modal Analysis, often referred to as Modal Testing. Numerical Modal Analysis is used to simulate dynamic behaviour when modal testing is unimplementable or unnecessary. It involves discretization — typically using finite element modelling — and solving the resulting equations of motion under appropriate initial and boundary conditions in a process similar to that shown in Equations \ref{eq:ndof-eoms}-\ref{eq:eigen-solution}. Numerical Modal Analysis offers a faster means of evaluating simpler systems without the need for experimental testing. 
-
-In contrast, Modal Testing relies on the principle that, in a mostly linear system, the same modal parameters used to predict the system's response can be obtained from a measurement of that response. It utilizes various experimental methods such as shaker testing or impact testing to gather response data using sensors like accelerometers or laser vibrometers. Typically, one would pair the experimental set-up with computational algorithms to extract the modal parameters from the test data. An example set-up for a modal test using a shaker is showcased in Figure \ref{fig:shaker-test}. Modal Testing is often the first step for applications such validating models, or measuring the effect of environmental and operational conditions on structures. This underscores why modal testing is typically preferred and more prevalent, as it directly captures the system's response in a way that numerical modal analysis is unable to. Due to the widespread adoption of modal testing in structural dynamics, the term modal analysis is generally interpreted as modal testing, and due to the nature of the work in this report, the term modal analysis will also be referring to modal testing.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = 0.75\linewidth]{Figures/Shaker-test.png}
-    \caption{Typical electrodynamic shaker experimental set up, adapted from He \& Fu \cite{fu2001modal}}
-    \label{fig:shaker-test}    
-\end{figure}
-
-In modern research areas such as structural health monitoring (SHM)—where the primary objective is to observe changes in an asset's structural condition through continuous monitoring—modal analysis is frequently employed because a system's modal parameters are highly sensitive to its physical state \cite{WordenSHM2013}. Natural frequencies and mode shapes are considered damage-sensitive features; whether changes result from cracks, corrosion, environmental effects, or fatigue, any structural alteration will modify the physical parameters and lead to a quantifiable change in the modal parameters. By statistically comparing a structure's current modal parameters with its baseline measurements, typically taken when the structure is in good condition, early signs of damage and degradation can be detected. This approach enables the effective monitoring of essential infrastructure, including bridges \cite{Bunce2024,Maeck2001,Peeters2000}, buildings \cite{Saeed2024}, and wind turbines \cite{Bull2021,Tsiapoki2024}, making modal analysis an invaluable tool for ensuring the safety and longevity of many everyday structures. See Figure \ref{fig:z24-bridge}, and Figure \ref{fig:hawk-tuah} for examples of modal testing in SHM contexts for civil and structural engineering and for aerospace respectively.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width = 0.75\linewidth]{Figures/z24 modeshapes color.png}
-    \caption{Model analysis results of the Z24 bridge where Maeck et al. in \cite{Maeck2001,MAECK2003,Peeters2000} performed an experimental campaign on a bridge in Switzerland to benchmark vibration based techniques for damage identification}
-    \label{fig:z24-bridge}
-\end{figure}
-
-Modal analysis is widely used across various engineering fields. In the automotive industry, it plays an essential role in enhancing vehicle design, safety, comfort, and performance by analysing responses to factors like axle gear noise, unbalanced loads, and road harshness, thereby optimizing lightweight and high-strength designs \cite{Glen2003nvh,Nissan1975,Martz1979,French1998,Liu2020}. In the aerospace sector, detailed dynamic analysis is crucial for balancing structural integrity with weight reduction. Here, modal analysis verifies computational models, controls unwanted vibrations, and evaluates effects such as wind-induced loads and fluid-induced phenomena. Together, these applications provide vital insights that improve overall structural resilience and performance \cite{fu2001modal,ewins2000modal,wright2008aeroelastics,Chamberlain2017,saffry2014,F16gvt2011,UAV2012,Alexander2024}.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\linewidth]{Figures/F16 test.png}
-    \caption{Peeters et al. \cite{F16gvt2011}, performed modal tests on wind-tunnel model and full sized F16 aircraft}
-    \label{fig:f16-test}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\linewidth]{Figures/hawk-tuah.jpg}
-    \caption{BAE systems Hawk T1A aircraft}
-    \label{fig:hawk-tuah}
-\end{figure}
-
-In civil and structural engineering, modal analysis — particularly Operational Modal Analysis (OMA) — is extensively used to predict and evaluate the behaviour of structures subjected to seismic, crowd, wind, wave, or traffic-induced loading. This technique is critical for assessing tall buildings, dams, and bridges, where accurate response measurements and parameter identification directly inform design decisions that enhance resilience and safety. Ultimately, the insights provided by modal analysis help extend the lifespan of structures and safeguard human lives. \cite{fu2001modal,ewins2000modal, Rainieri2014,Archila2013,Abdelnour2024,Saeed2024,Reynolds2009,Roia2015,Cantieni2004,Peeters2000,Maeck2001,Bunce2024}
 
 \pagebreak
 \section{Computation in engineering, and the software engineering industry}
 
-Building on the earlier discussion that highlighted the integration of computation with modal testing, it is evident that the engineering industry is heavily reliant on software and computational methods. This reliance arises from the extensive volumes of data—such as laboratory results or continuous monitoring outputs—that require processing, as well as from the complexity of calculations that are impractical to perform manually. Common examples include the use of advanced 3D modelling and drawing software, such as Fusion and SolidWorks, programming for data analysis using languages like Python, MATLAB or C++, and various simulation tools like Simulink, ANSYS, or OpenFOAM. It is a reasonable assumption that software usage is indispensable to engineering practices.
+Building on the earlier discussion that highlighted the integration of computation with modal testing, it is evident that the engineering industry is heavily reliant on software and computational methods. This reliance arises from the extensive volumes of data, such as laboratory results or continuous monitoring outputs, that require processing, as well as from the complexity of calculations that are impractical to perform manually. Common examples include the use of advanced 3D modelling and drawing software, such as Fusion and SolidWorks, programming for data analysis using languages like Python, MATLAB or C++, and various simulation tools like Simulink, ANSYS, or OpenFOAM. It is a safe assumption that software usage is indispensable to engineering practices.
 
-Multiple classifications, interpretations, and naming conventions exist among software developers regarding software categorization. To avoid ambiguity in this report, the terms "proprietary software" and "open-source software" are defined explicitly. Open-source software (OSS) refers to software licensed to allow free use, modification, and redistribution of both the software and its source code. In contrast, proprietary software denotes software tools or programming environments that require the purchase of a licence for use and restrict access to the source code, thereby preventing modification and redistribution. Previous work \cite{InterimReport} presented a more comprehensive comparison of the two software distribution paradigms. To avoid redundancy, only a brief summary of those findings is provided here, followed by an overview of the conclusions and the implications for future work.
+Multiple classifications, interpretations, and naming conventions exist among software developers regarding software categorization. To avoid ambiguity in this report, the terms   ''proprietary software  '' and   ''open-source software  '' are defined explicitly. Open-source software (OSS) refers to software licensed to allow free use, modification, and redistribution of both the software and its source code. In contrast, proprietary software denotes software tools or programming environments that require the purchase of a licence for use and restrict access to the source code, thereby preventing modification and redistribution. Previous work \cite{InterimReport} presented a more comprehensive comparison of the two software distribution paradigms. To avoid redundancy, only a brief summary of those findings is provided here, followed by an overview of the conclusions and the implications for future work.
 
 The earliest efforts in software commercialization demonstrated considerable foresight, causing a widespread adoption of proprietary tools in engineering industries. These tools gained traction due to rigorous testing, continuous support, adherence to industry standards, and user-friendly interfaces that reduced errors and enhanced usability. Conversely, inherent drawbacks such as high costs, usage restrictions, lack of source code access, potential obsolescence, and privacy concerns have emerged. In contrast, open-source alternatives offer cost-free access, greater user control, and community-driven support, though they often face challenges with limited testing and installation complexity. As a result, selecting between open-source and proprietary solutions requires a careful evaluation of these trade-offs, balancing reliability and robustness against cost and flexibility.
 
 \section{Project Scope}\label{sec:intro-scope}
 The pivotal role that modal analysis plays in advancing engineering fields provides motivation for this project. As highlighted in Section \ref{sec:intro-modal-applications}, modal analysis is essential for ensuring the comfort, performance, and safety of vehicles and aircraft, as well as for safeguarding critical infrastructure such as buildings, bridges, railway tracks, and offshore structures. Despite its widespread application, many engineers and researchers rely on software tools to perform modal analysis without fully understanding the underlying theory and algorithms, which hinders their ability to interpret results or adapt the methods for unique challenges that are presented quite frequently. This reliance has enabled companies, e.g. Siemens or Structural Vibration Solutions, to charge exorbitant prices for software licences — a situation that thrives in a market dominated by a monopoly of robust solutions. To address this gap, the project introduces an accessible, well-documented, and rigorously tested open-source software tool that produces accurate results, elucidates the fundamental theory, and permits customization for novel applications. The development of a Python library for modal analysis represents the first robust and reliable open-source solution in this domain.
-\subsection{Defining a clear Aim and realistic Objectives}\label{sec:intro-scope-aimsobjs}
+
+\subsection{Aim and Objectives}\label{sec:intro-scope-aimsobjs}
 This project is part of a broader development initiative aimed at developing and providing modal-analysis open-source software, making it essential to establish a clear aim that outlines specific objectives and goals. Accordingly, this project contributes to the initiative by integrating and testing the polyreference least-squares complex frequency domain modal parameter estimator (pLSCF, or PolyMAX{\copyright} commercially) in a Python library. Modal Analysis assists in engineering design decisions for compliance standards, and various research contexts, such as structural health/condition monitoring, and system identification. The software aims reduce uncertainty in data interpretation, allowing engineers and researchers to direct their focus on efficient experimental design and testing. This aim can be effectively achieved through the following objectives, which provide a structured approach to achieving a full implementation of pLSCF in the library. 
 
 \begin{itemize}
@@ -135,7 +140,7 @@ This project is part of a broader development initiative aimed at developing and
     \item Integrate pLSCF in the open-source Python library.
     \item Perform unit tests on the algorithm's individual functions and classes, and test the complete algorithm using simulated and experimental data as a benchmark for the algorithm's efficiency and consistency.
     \item Perform the same objectives for the Least-Squares Frequency Domain method, which is a simpler, supplementary algorithm used to estimate the mode shapes.
-    \item Help in further supplementary tasks, like signal processing and conditioning, algorithm optimization, and providing documentation for users, which will contribute to the usability and robustness of the published software.
+    \item Help in additional tasks, like signal processing and conditioning, algorithm optimization, and providing documentation for users, which will contribute to the usability and robustness of the published software.
 \end{itemize}
 
 % \pagebreak
@@ -165,14 +170,15 @@ This project is part of a broader development initiative aimed at developing and
 
 
 \chapter{Software Development}\label{sec:methods}
-{\color{red} insert introductory paragraph to this chapter}
+% {\color{red} insert introductory paragraph to this chapter}
+This chapter aims to outline the methodologies implemented to achieve the objectives of the project. It begins by presenting the mathematical and scientific foundations utilised throughout the development process, including any novel approaches specifically developed for this work. Additionally,  it discusses key challenges and considerations encountered throughout the development process, providing clarity on the decisions made to address these issues
 
 \section{Modal Analysis Algorithms: mathematical overview}\label{sec:methods-modal}
 
-{\color{red} insert something to do with modal curvefitting}
+% {\color{red} insert something to do with modal curvefitting}
 
 \subsection{Frequency Response Functions and \emph{poles}}\label{sec:methods-modal-frf}
-The process for obtaining the modal parameters presented in Section \ref{sec:intro-modal-maths} represents a complete solution to the system depicted in Figure \ref{fig:ndof-chain} under unforced conditions. In practical applications, however, an input force is applied to elicit the system response from which the modal parameters are then derived. The response of the structure is typically captured using a numeric construct called the Frequency Response Function (FRF). An FRF is a transfer function, which represents the ratio between a structure's response to the input excitation forces in the frequency-domain \cite{Tim_FRF,Tim_Modal_Properties2,fu2001modal}. Revisiting the system's differential equation to include both damping and an external force transforms Equation \ref{eq:k-minus-m} into
+The process for obtaining the modal parameters presented in Section \ref{sec:intro-modal-maths} represents a complete solution to the system depicted in Figure \ref{fig:ndof-chain} under unforced conditions. In practical applications, however, an input force is applied to elicit the system response from which the modal parameters are then derived. The response of the structure is most commonly captured using a numeric construct called the Frequency Response Function (FRF). An FRF is a transfer function, which represents the ratio between a structure's response to the input excitation forces in the frequency-domain \cite{Tim_FRF,Tim_Modal_Properties2,fu2001modal}. Revisiting the system's differential equation to include both damping and an external force transforms Equation \ref{eq:k-minus-m} into
 \begin{equation}
     ([\mathbf{K}]+j\nu[\mathbf{C}] - \nu^2[\mathbf{M}])\mathbf{X} = \mathbf{F}
 \end{equation}
@@ -215,58 +221,65 @@ In modal curve-fitting, algorithms typically fit the analytical functions based 
     \item For an arbitrary model order $M$, a pole for a specific mode converges on a natural frequency and damping ratio as $M\rightarrow \infty $, within a certain tolerance interval.
 \end{enumerate}
 
+%========================
+% Reduntant part
+%========================
 
-\subsection{Least Squares Complex Exponential (LSCE) Method}\label{sec:methods-modal-lsce}
+% \subsection{Least Squares Complex Exponential (LSCE) Method}\label{sec:methods-modal-lsce}
 
-The LSCE method is a time-domain modal curve-fitting algorithm that correlates the \textbf{I}mpulse \textbf{R}esponse \textbf{F}unction (FRF in the time-domain) of a multi-degree-of-freedom system with its poles and modal residues using a complex exponential. An autoregressive (AR) model is subsequently constructed, and its solution produces a polynomial whose roots correspond to the system's complex poles \cite{Guillaume1998,fu2001modal}. Although the LSCE method was quite popular due to its wide range of applicability, it had a certain number of drawbacks, which motivated the need for better methods;
-\begin{itemize}
-    \item Although it is polyreference in nature, it does not always perform well with a large number of references (input excitation)
-    \item The method is not well suited for noisy data, which results in unclear stabilisation plots, and inaccuracy in modal parameter estimation.
-\end{itemize}
-
+% The LSCE method is a time-domain modal curve-fitting algorithm that correlates the \textbf{I}mpulse \textbf{R}esponse \textbf{F}unction (FRF in the time-domain) of a multi-degree-of-freedom system with its poles and modal residues using a complex exponential. An autoregressive (AR) model is subsequently constructed, and its solution produces a polynomial whose roots correspond to the system's complex poles \cite{Guillaume1998,fu2001modal}. Although the LSCE method was quite popular due to its wide range of applicability, it had a certain number of drawbacks, which motivated the need for better methods;
 % \begin{itemize}
-%     \item first least squares modal analysis algorithm.
-%     \item time domain though
-%     \item makes a LOT of poles
+%     \item Although it is polyreference in nature, it does not always perform well with a large number of references (input excitation)
+%     \item The method is not well suited for noisy data, which results in unclear stabilisation plots, and inaccuracy in modal parameter estimation.
 % \end{itemize}
+
+% % \begin{itemize}
+% %     \item first least squares modal analysis algorithm.
+% %     \item time domain though
+% %     \item makes a LOT of poles
+% % \end{itemize}
  
-\subsection{Least Squares Complex Frequency Domain}\label{sec:methods-modal-lscf}
+% \subsection{Least Squares Complex Frequency Domain}\label{sec:methods-modal-lscf}
 
-A new method that counters the drawbacks of the LSCE method was proposed, a frequency-domain implementation of the method. The LSCF method uses a common denominator transfer function model, to fit a weighted least-squares estimate FRF to measured FRF data \cite{Guillaume1998,Guillaume2003}.
-\begin{equation}
-    H_{ij}(\omega) = \frac{N_{ij}(\omega)}{d(\omega)}
-\end{equation}
-Where $d$ is a denominator polynomial, and $N$ is a numerator matrix polynomial. Finding a cost function, and solving a set of normal equation yields the polynomial coefficients for the denominator, similar to LSCE, the roots of that polynomial represent the complex poles of the system. The LSCF method offers multiple benefits to the LSCE:
-\begin{itemize}
-    \item The use of a weighted regression, which eliminates the effects of noise in the measurement chain, by favouring data points with less variance.
-    \item The LSCF method provides "fast stabilising" diagrams, i.e. the poles converge quicker. A comparison of a stabilisation diagram from both LSCE and LSCF is showcased in Figure \ref{fig:stab-lsce-vs-lscf}.
-\end{itemize}
+% A new method that counters the drawbacks of the LSCE method was proposed, a frequency-domain implementation of the method. The LSCF method uses a common denominator transfer function model, to fit a weighted least-squares estimate FRF to measured FRF data \cite{Guillaume1998,Guillaume2003}.
+% \begin{equation}
+%     H_{ij}(\omega) = \frac{N_{ij}(\omega)}{d(\omega)}
+% \end{equation}
+% Where $d$ is a denominator polynomial, and $N$ is a numerator matrix polynomial. Finding a cost function, and solving a set of normal equation yields the polynomial coefficients for the denominator, similar to LSCE, the roots of that polynomial represent the complex poles of the system. The LSCF method offers multiple benefits to the LSCE:
+% \begin{itemize}
+%     \item The use of a weighted regression, which eliminates the effects of noise in the measurement chain, by favouring data points with less variance.
+%     \item The LSCF method provides   ''fast stabilising  '' diagrams, i.e. the poles converge quicker. A comparison of a stabilisation diagram from both LSCE and LSCF is showcased in Figure \ref{fig:stab-lsce-vs-lscf}.
+% \end{itemize}
 
 
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Figures/lsce-stab.png}
-        \caption{ }
-        \label{fig:lsce-stab}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.46\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Figures/lscf-stab.png}
-        \caption{ }
-        \label{fig:lscf-stab}
-    \end{subfigure}
-    \caption{Stabilisation Diagrams from LSCE time-domain algorithm (a), and LSCF frequency domain algorithm (b) from Guillaume et al. \cite{Guillaume2003}. Stable poles are marked as black 's' on chart, while spurious or unstable poles are marked in green.}
-    \label{fig:stab-lsce-vs-lscf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[b]{0.45\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figures/lsce-stab.png}
+%         \caption{ }
+%         \label{fig:lsce-stab}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.46\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Figures/lscf-stab.png}
+%         \caption{ }
+%         \label{fig:lscf-stab}
+%     \end{subfigure}
+%     \caption{Stabilisation Diagrams from LSCE time-domain algorithm (a), and LSCF frequency domain algorithm (b) from Guillaume et al. \cite{Guillaume2003}. Stable poles are marked as black 's' on chart, while spurious or unstable poles are marked in green.}
+%     \label{fig:stab-lsce-vs-lscf}
+% \end{figure}
 
-\subsection{The polyreference implementation of LSCF}\label{sec:methods-modal-polymax}
+%========================
+
+\subsection{The polyreference-LSCF modal parameter estimation algorithm}\label{sec:methods-modal-polymax}
 % By closely examining the derivation of the LSCF method proposed by Guillaume et al. in \cite{Guillaume1998,Guillaume2003}, it is apparent that the method isn't inherently polyreference, in practice, this means the algorithm individually performs the fit for each input-output pair. At large numbers of inputs and outputs, this becomes computationally taxing, which prompted the need for a polyreference implementation. This polyreference LSCF method 'PolyMAX'  was proposed by Peeters et al. in \cite{Peeters2004_polymax,Peeters2004_polymaxAEROSPACE,Peeters2005_polymaxOMA,Peeters2004_CHALLENGES}. The main benefits of using the polyreference implementation of the LSCF method were the computational efficiency, closely spaced modes can be separated, and the use of the Singular Value Decomposition of the modal residues was made redundant, this will be discussed in depth in Section \ref{sec:lsfd}.
 
 
-By closely examining the derivation of the LSCF method proposed by Guillaume et al. in \cite{Guillaume1998,Guillaume2003}, it is apparent that the method isn't inherently polyreference. In practice, this means the algorithm fits each input-output pair individually, a process that becomes computationally taxing when the number of inputs and outputs is large. This inefficiency motivated the development of a polyreference implementation. Peeters et al. proposed such an implementation, known as 'PolyMAX' \cite{Peeters2004_polymax,Peeters2004_polymaxAEROSPACE,Peeters2005_polymaxOMA,Peeters2004_CHALLENGES}. The polyreference LSCF (pLSCF) method offers several key benefits: it enhances computational efficiency, enables the separation of closely spaced modes, and eliminates the need for the Singular Value Decomposition of the modal residues. The last advantage is discussed in depth in Section \ref{sec:lsfd}. 
+The algorithm implemented in this work is the polyreference least-squares complex-frequency-domain (pLSCF) method, an industry-standard technique for frequency-domain modal analysis. pLSCF is essentially a modal curve-fitting algorithm that builds on the classical least-squares complex-frequency-domain (LSCF) approach. Its key feature is its polyreference formulation, so rather than fitting each input-output transfer function separately, it performs a single, simultaneous fit for every output channel using all available input channels.
+
+Building on the single-reference formulation proposed by Guillaume et al. \cite{Guillaume1998,Guillaume2003}, the original LSCF fits each input-output pair individually, a procedure that becomes computationally taxing when channel counts are high. This inefficiency motivated the development of polyreference implementations. Peeters et al. introduced one such implementation, PolyMAX, in \cite{Peeters2004_polymax,Peeters2004_polymaxAEROSPACE,Peeters2005_polymaxOMA,Peeters2004_CHALLENGES}. The polyreference LSCF (pLSCF) method offers several advantages: it improves computational efficiency, facilitates the separation of closely spaced modes, and removes the need to perform a Singular Value Decomposition of the modal residues when estimating mode shapes, contributing even more to the computational efficiency. The latter benefit is discussed in detail in Section \ref{sec:lsfd}.
 
 The pLSCF method adopts a right matrix fractional polynomial model for fitting measured FRF data, the following is a brief overview of the algorithms process, a full derivation is available in \ref{sec:POLYMAX-DERIVATION}:
 \begin{equation}
@@ -313,7 +326,7 @@ Where, $\bullet^H$ is the Hermitian transpose of a matrix, and $\mathbf{tr}\{\bu
 \begin{equation}\label{eq:linear-cost-function}
     l^{LS}(\theta)=\mathbf{tr}\{\theta^TJ^HJ\theta\}
 \end{equation}
-In Equation \ref{eq:linear-cost-function}, the term $J$ is the Jacobian matrix, which contains values relating to the frequency content, "x-axis", of the measurement and the response, "y-axis", of the measurement. Minimising the cost function gives the normal equation:
+In Equation \ref{eq:linear-cost-function}, the term $J$ is the Jacobian matrix, containing block elements of the weighted polynomial basis, and the same polynomial basis premultiplied by the measured data. Minimising the cost function gives the normal equation:
 \begin{equation}
     2Re(J^HJ)\theta = 0
 \end{equation}
@@ -328,7 +341,7 @@ Polynomial coefficients, $\alpha$ and $\beta$ are obtained by imposing a constra
     \end{pmatrix}
 \end{equation}
 An interesting property of companion matrices is that its eigenvalues are the roots of its polynomial, as such, the poles and the modal participation factors can be found using an eigendecomposition of the companion matrix.
-\begin{equation}
+\begin{equation} \label{eq:polymax-solution}
     CQ = \Lambda Q
 \end{equation}
 Where $Q$ is the eigenmatrix, and contains the modal participation factors, and $\Lambda$ is a diagonal matrix which has the system's discrete time poles on its diagonal entries. A model of polynomial order $p$ will give $N_{inputs}\cdot p$ number of poles and $Q\in\mathbb{C}^{N_{inputs}\cdot p \times N_{inputs}\cdot p}$ participation factors.
@@ -339,227 +352,407 @@ In practice, modeshapes are estimated using the Least Squares Frequency Domain a
 \begin{equation}\label{eq:lsfd-model}
     H(s) = \sum_{m=1}^{N_{modes}}\left( \frac{\Psi_m\cdot L_{m}^{T}}{s - \lambda_m}+\frac{\Psi_{m}^{*}\cdot L_{m}^{H}}{s - \lambda_{m}^{*}} \right) +\frac{\mathbf{LR}}{s^2} + \mathbf{UR}
 \end{equation}
-Where $\Psi_m$ is the modeshape vector for the mode $m$, $L_{m}$ is the mode's participation factor, $\mathbf{LR}$ and $\mathbf{UR}$ are the upper and lower residuals, and $s = j\omega$.
+Where $\Psi_m$ is the modeshape vector for the mode $m$, $L_{m}$ is the mode's participation factor, $\mathbf{LR}$ and $\mathbf{UR}$ are the upper and lower residuals, and $s = j\omega$. By taking the Modal Residues for the $i^{th}$ mode $[Res_i] = \Psi_m\cdot L_{m}^{T}$, they can be found, alongside the Upper and Lower residuals, in one single linear least squares step. With no knowledge of the modal participation factors, the modeshape can only be estimated using a singular value decomposition (SVD) of the residue matrix.
+\begin{equation}
+    [Res_i] = \mathbf{U\Sigma V^T}
+\end{equation}
+Where $\mathbf{\Sigma}$ is a diagonal matrix containing the singular values of the matrix, $\mathbf{U}$ is a matrix containing left singular vectors, and $\mathbf{V}$ is a matrix containing right singular vectors. This process can yield accurate modeshapes only if the residue matrix is a rank-1, which mat not always be the case. Knowledge of the modal participation factors, which the pLSCF algorithm provides, removes this limitation by allowing a vector to be calculated using the properties of the outer product and rearranging. The use of the outer product provides quicker computation, as matrix-vector multiplication is generally considered quicker than the SVD, this is particularly important for the frequently encountered, high number of output systems.
+\begin{equation}
+    \mathbf{\Psi}_i = \frac{[Res_i] \mathbf{L}_i}{\mathbf{L}_i^H \mathbf{L}_i}
+\end{equation}
 
 \section{Implementing pLSCF}\label{sec:methods-softwaredev}
 
 
-For all these subsections follow this process:
-\begin{itemize}
-    \item The problem/importance of this.
-    \item How it was done.
-    \item What this resulted in. and what that means for the user/engineer. 
-\end{itemize}
+% For all these subsections follow this process:
+% \begin{itemize}
+%     \item The problem/importance of this.
+%     \item How it was done.
+%     \item What this resulted in. and what that means for the user/engineer. 
+% \end{itemize}
 
 
 \subsection{Project environment: software development practices}\label{sec:methods-softwaredev-git}
 
-The overarching aim of the project is the development of Python library for structural dynamics and modal analysis. However, it is impractical for one individual to develop a comprehensive and robust library for such a large scope, and hence the focused aim of implementing and testing one popular algorithm. The library is being developed collaboratively by academics, and students as part of a large coordinated effort. In such large-scale projects, effective management is needed to prevent disruptive mishaps to the codebase and to check that the contributors are using an up-to-date version of the source code. Version control systems such as Git  
+The overarching aim of the project is the development of Python library for structural dynamics and modal analysis. However, it is impractical for one individual to develop a comprehensive and robust library for such a large scope, and hence the focused aim of implementing and testing one popular algorithm. The library is being developed collaboratively by academics, and students as part of a large coordinated effort. In such large-scale projects, effective management is needed to prevent disruptive mishaps to the codebase and to check that the contributors are using an up-to-date version of the source code. Version control systems, such as Git, are standard practice in software development for collaborative project management. Git enables contributors to work independently on  ''branches,” allowing them to develop and test code without immediately affecting the main codebase, while maintaining a detailed history of changes stored within a   ''repository  ''. The Git repository is hosted and managed on GitHub, which is an online platform which simplifies the usage of Git version control, as it adds more intuitive project management functionalities. Furthermore, the project adopts an Agile Project Management paradigm; focusing on iterative improvement, through periodic feedback, leading to a faster, more efficient development process. 
 
-\begin{itemize}
-    \item Involving many people. = problem.
-    \item Using Git, and an Agile environment of Continuous improvement, testing, and integration.
-    \item Results in a more streamlined process which makes development quicker, and more efficient.
-\end{itemize}
+
+
+% \begin{itemize}
+%     \item Involving many people. = problem.
+%     \item Using Git, and an Agile environment of Continuous improvement, testing, and integration.
+%     \item Results in a more streamlined process which makes development quicker, and more efficient.
+% \end{itemize}
 
 \subsection{Software Testing}\label{sec:methods-softwaredev-test}
+A pervasive challenge associated with open-source projects is the lack formal or monetary incentives for the developers to comprehensively test published work, resulting in superficially checked software which allows latent issues and bugs to persist. This deficiency in systemic validation undermines the software's reproducibility and accuracy in research. Addressing these gaps through implementing rigorous software testing is the most effective remedy. Comprising unit tests, which validate the functionality of individual components such as functions or objects in isolation, and integration (or end-to-end) tests, which verify that the individually tested components interact correctly when implemented together. These tests are typically done using a known set of inputs and expected behaviours.
 
-\begin{itemize}
-    \item Consistently working algorithms. = not always guaranteed.
-    \item Explain the unit test, and the unit testing performed for the functions. (use an intuitive one like the companion matrix)
-    \item this means that by having a standardized input-output system, one can then optimize the algorithm, make it quicker, or more accessible, and have that benchmark ready to check that the algorithm is correctly functioning.
-    \item then go into integration testing. after all the unit tests pass individually, you'd have to then test that they all work in unison.
-\end{itemize}
+Consider a function, with the sole purpose of obtaining the companion matrix from a known set of polynomial coefficients, $\alpha$. The code for the function can be seen in Listing \ref{lst:comp_mat_code}, the unit test to validate this code gave a simple set of polynomial coefficients, e.g. \inlinecode{alpha = [1, 2, 3, 4, 5, 6, 7, 8, 1]}, and asserted that the returned companion matrix was equal to a hand calculated companion matrix.
 
-\subsection{Optimisation: Time complexities}\label{sec:methods-softwaredev-optimization}
+\begin{lstlisting}[float, floatplacement = {t}, style=quietlight,language=Python,caption={Python function which constructs and returns the companion matrix from input argument $\alpha$. This function, and others, depend on NumPy \cite{NumPy}, which is discussed further section \ref{sec:methods-softwaredev-optimization}.},label={lst:comp_mat_code}]
+import numpy as np
 
-\begin{itemize}
-    \item Briefly describe what a time and space complexity using big O notation.
-    \item Small measure of what the performance might look like, and not indicative of how much time.
-    \item Big datasets to analyse = big computation time and ram requirements = big problem if ur testing an entire plane or bridge.
-    \item using Numpy broadcasting helps remove overhead.
-    \item Using BLAS packages also helps, as this goes to the bare-bones of the machine and directly uses the processing unit.
-\end{itemize}
+def _calc_comp_mat(alpha:np.ndarray):
 
-\subsection{Code readability and usability}\label{sec:methods-softwaredev-pep8}
-\begin{itemize}
-    \item Written code is not always understandable. It is a known that code is more often read than made.
-    \item Docstrings for functions, and classes, and sometimes files if the code there doesn't class as any.
-    \item this means that the reader has:
-    \begin{itemize}
-        \item An explanation of what each little thing does.
-        \item A scientific reference like a journal publication or maybe just an online article.
-    \end{itemize}
-\end{itemize}
-\begin{itemize}
-    \item PEP-8 for naming conventions, using capitalization, underscores etc.
-    \item makes it seem professional, and also other developers can sort of understand some thought processes better.
-\end{itemize}
+    n_in = alpha.shape[-1]    
+    a1  = alpha[:-n_in,:]
+    mp = a1.shape[0]
 
 
+    comp_mat= np.eye(mp-n_in)
+    comp_mat = np.vstack((np.zeros((n_in,mp-n_in)),comp_mat))
+
+    return np.hstack((comp_mat,a1)).T
+
+def test_calc_comp_mat():
+
+    n_inputs = 2
+    _p = 2
+    # literally alpha is 1 to 8, with I(N_inputs) as alpha_p.
+    alpha_known = np.array([[1,2],
+                            [3,4],
+                            [5,6],
+                            [7,8],
+                            [1,0],
+                            [0,1]])
+    # Hand calculated
+    comp_mat_known = np.array([[0,0,1,0],
+                               [0,0,0,1],
+                               [1,3,5,7],
+                               [2,4,6,8]])
+
+    comp_mat_test = p._calc_comp_mat(alpha_known)
+    
+    assert np.allclose(comp_mat_known,comp_mat_test), "Error in companion matrix value"
+    assert comp_mat_test.shape == (n_inputs*_p,n_inputs*_p), "Error in companion matrix shape"
+\end{lstlisting}
+
+
+
+\subsection{Optimisation}\label{sec:methods-softwaredev-optimization}
+
+Python's readable syntax has made it the \emph{lingua franca} of scientific computing, yet this convenient syntax, which abstracts the user from the machine operations, imposes a speed penalty. Recent benchmarks for relevant applications confirm this gap: Diehl et al. report the slowest runtimes when solving the 1-D heat equation in Python compared with nine other languages \cite{Diehl2024}, and Almurayh notes similar results for large-scale matrix multiplication \cite{Almurayh2022}. In modal analysis the data volumes, for instance continuous high sample frequency measurements from aircraft or civil-engineering sensors, magnify these overheads, so scripts written in native Python may finish running long after a structure's service life.
+
+Most practitioners therefore rely on NumPy's N-Dimensional Array \inlinecode{ndarray}. NumPy \cite{NumPy} is an open source library extensively used in scientific computing, due to it's C-coded backend. NumPy's array has become the de facto format for arrays in Python programming, and as such, many libraries relevant in scientific \cite{SciPy} and mathematical computing \cite{pandas}, and data visualisation \cite{matplotlib} have relied on NumPy. The development of the open-source modal analysis library relies heavily on NumPy's data containers and functions, as well as SciPy, a python library which integrates signal processing functions and numerical methods, due to their speedy linear algebra operations.
+
+Even with NumPy, cubic-time operations like multiplying two $n\times n$ matrices remain $\mathcal{O}(n^{3})$, so a ten-fold increase in dimension inflates work by three orders of magnitude. Efficient modal analysis code thus requires both the right low-level tools, which NumPy and SciPy provide, and careful limitation aware software design.
+
+
+Applying the discussed principles into the implementation of pLSCF is a straightforward process. Consider the calculation for the 3-Dimensional array (tensor) $R$, defined for the $o^{th}$ on the $3^{rd}$ dimension by
+\begin{equation}
+    R_o = Re(X_o^H X_o)
+\end{equation}
+Where $X_o$ is the weighted polynomial basis of the least squares problem for the $o^{th}$ output/DOF. A progression of the implemented calculation is shown in Listing \ref{code:calc_r}. The first implementation relies on Python's native matrix multiplication operator. The second implementation leverages NumPy's Einstein Summation Convention function, the recommended function for multiplying arrays of dimensions higher than 2. This function however, struggles at higher model orders and higher sensor numbers, this is likely due to the overhead involved with translating the subscript inputs into array dimensions. The final implementation leverages the \inlinecode{dot} function, which is a highly optimised 2D matrix multiplication routine, as it is able to divide the multiplication into different routines which are run simultaneously.
+
+
+\begin{lstlisting}[style={quietlight},language={Python},caption={Various implementations of calculating the tensor $R$},label{code:calc_r}]
+import numpy as np
+
+
+# First implementation
+def calc_r(X):
+    n_outputs = X.shape[-1]
+
+    for output in range(n_outputs)
+        r[:,:,output] = np.real(X[:,:,output].H @ X[:,:,output])
+
+    return r
+
+# Second implementation: improved using numpy functions
+def calc_r(X):
+    r = np.einsum('ijk,ljk -> ilk',X.conj(),X).real
+    return r
+
+# Optimum implementation
+def calc_r(X):
+    n_out = X.shape[-1]
+    r = np.empty((X.shape[1],X.shape[1],X.shape[-1]), dtype=np.complex128)
+    xh = np.conjugate(X).transpose((1,0,2))
+    for output in range(n_out):
+        r[:,;,output] =  np.dot(xh[:,:,output],X[:,:,output])
+
+    return np.real(r)
+\end{lstlisting}
 
 \pagebreak
-\textbf{maths-y bit}
+\subsection{Code readability and usability}\label{sec:methods-softwaredev-pep8}
+Highly optimised code comes with the inconvenience of being abstract and difficult to visually interpret. Developers must consider the user when writing their code, as it is a widely cited \cite{Cheshire2005,Andra2012,Martin2008,ITUOOP,Jenkins2025} estimate in software engineering that developers will spend a 10-to-1 ratio of their time reading code as compared to writing it. The most common practices for making code readable are inline comments, and documentation. Inline comments are simple text statements describing a line of code which may be unintuitive, while documentation refers to a block of text that describes a function, class, or module in depth. An example usage of both documentation and comments is in Listing \ref{code:docstrings}.
 
-\begin{itemize}
-    \item Frequency response function
-    \item dynamical system poles
-    \item logic/control flow
-    \item complexities and big O notation
-    \item unit testing and integration testing.
-    \item Version control.
-\end{itemize}
+There are additional code writing guidelines offered by the Python Enhancement Proposal (PEP) \cite{pep8}. PEP is concerned with standardising the naming conventions of variables, functions, classes, and files, as well as the formatting of written code. For example, PEP recommends that lowercase with underscores be used for variables, functions, and filenames, e.g. \inlinecode{dynamics.py}, \inlinecode{y=x+10}, while uppercase is recommended for constants, or variables that are meant to be unchanged. e.g. \inlinecode{PLANCK =  1.616255e-35}. These guidelines add a layer of simplicity which helps the user better understand how the code works.
+\vspace{12pt}
+
+\begin{lstlisting}[style={quietlight},language={Python},caption={Example documentation and inline comment usage in Python code.},label={code:docstrings}]
+def random_function(input1, input2):
+    """
+    random_function performs... {insert summary}
+    This block of text enclosed by 3 quotation marks is referred to as docstrings in Python programming
+
+    Args:
+        input1 (expected data type): description
+        input2 (expected data type): description
+
+    Returns:
+        output (data type): description
+    
+    Reference:
+        [1] Book title, article etc..
+    
+    """
 
 
-\begin{itemize}
-    \item lsce (brief)
-    \item lscf (brief)
-    \item plscf (important bits and refer to appendix for full derivation, use own notation and wording).
-    \item Why the companion matrix solution works. $\mathbf{eig}(C(p)) = \lambda_i \rightarrow p(\lambda) = 0$
-    \item here one must explain what poles are for a system.
-    \item lsfd for modeshapes.
-\end{itemize}
-
-\textbf{software-y bit}
-\begin{itemize}
-    \item time complexity optimization. discuss that O notation doesn't always equal less time.
-    \item unit testing, explain pytest stuff and fixturing and bla bla bla.
-    \item using numpy (BLAS routines/subroutines)
-    \item user facing code.
-    \item formatting guidelines.
-\end{itemize}
+    # this is an inline comment
+    # It can provide quick explanations to unintelligible lines of code.
+    # np.dot calculates the matrix multiplication of 2 dimensional arrays, assuming their shapes are compatible.
+    output = np.dot(input1, input2)  
+    return output
+\end{lstlisting}
 
 
 
 \chapter{Results}
+\section{Benchmarking results}
+\subsection{Simulated systems: 10 degree-of-freedom oscillator}
 
-\section{Simulated systems: 10 degree-of-freedom oscillator}
+To benchmark pLSCF, a number of lumped mass systems, as well as experimental data was used. Consider a 10 degree-of-freedom oscillator, with physical parameters as seen in Table \ref{table:10dof}.
 
-To benchmark pLSCF, a number of lumped mass systems, as well as experimental data was used. Consider a 10 degree-of-freedom oscillator, with physical parameters: 
-\[\mathbf{M} = \mathbf{diag}( 1,2,3,4,5,1,2,3,4,5) kg\]
-{\footnotesize
-\[
-\mathbf{K} = \begin{pmatrix}
-    50 & -30 &   0 &   0 &   0 &   0 &   0 &   0 &   0 &   0 \\
-   -30 &  70 & -40 &   0 &   0 &   0 &   0 &   0 &   0 &   0 \\
-     0 & -40 &  50 & -10 &   0 &   0 &   0 &   0 &   0 &   0 \\
-     0 &   0 & -10 &  70 & -60 &   0 &   0 &   0 &   0 &   0 \\
-     0 &   0 &   0 & -60 &  80 & -20 &   0 &   0 &   0 &   0 \\
-     0 &   0 &   0 &   0 & -20 &  50 & -30 &   0 &   0 &   0 \\
-     0 &   0 &   0 &   0 &   0 & -30 &  70 & -40 &   0 &   0 \\
-     0 &   0 &   0 &   0 &   0 &   0 & -40 &  90 & -50 &   0 \\
-     0 &   0 &   0 &   0 &   0 &   0 &   0 & -50 &  80 & -30 \\
-     0 &   0 &   0 &   0 &   0 &   0 &   0 &   0 & -30 &  70
-  \end{pmatrix} kN\cdot m^{-1}
-\]
-}
-\[\mathbf{C} = \mathbf{K}\cdot 10^{-5} Ns\cdot m^{-1} \]
+\begin{table}[H]
+    \centering
+    \caption{Physical Parameters of lumped mass-spring 10-DOF system.}
+    \label{table:10dof}
+    \begin{tabular}{c r r r}
+        \toprule
+        $i$ & $m_i\,[\mathrm{kg}]$ & $k_i\,[10^{4}\,\mathrm{N\,m^{-1}}]$ & $c_i\,[10^{-1}\,\mathrm{N\,s\,m^{-1}}]$ \\ \midrule
+         1  & 1 & 2 & 2 \\
+         2  & 2 & 3 & 3 \\
+         3  & 3 & 4 & 4 \\
+         4  & 4 & 1 & 1 \\
+         5  & 5 & 6 & 6 \\
+         6  & 1 & 2 & 2 \\
+         7  & 2 & 3 & 3 \\
+         8  & 3 & 4 & 4 \\
+         9  & 4 & 5 & 5 \\
+        10  & 5 & 3 & 3 \\
+        11  & -- & 4 & 4 \\ \bottomrule
+    \end{tabular}
+\end{table}
 
-Following the calculation of the modal properties, the analytical FRF is found using equation \ref{eq:frf-modal-model}. This synthetic data is passed through the implemented pLSCF algorithm and a stabilisation diagram is constructed for a maximum model order of 30, Figure \ref{fig:10-dof-stabilisation-clean} showcases the diagram.
+Following the calculation of the modal properties using the method highlighted in Section \ref{sec:intro-modal-maths}, the analytical FRF is found using equation \ref{eq:frf-modal-model}. This synthetic data is passed through the implemented pLSCF algorithm and a stabilisation diagram is constructed for a maximum model order of 30, Figure \ref{fig:10-dof-stabilisation-clean} showcases the diagram.
 \begin{figure}[H]
     \centering
     \includegraphics[width = \linewidth]{Figures/10-dof-clean-stabilisation.png}
-    \caption{Stabilisation of the direct FRF of $x_3$, stability criteria used (1) tolerance of 0.2rad/s in natural frequency, and 0.02 in damping ratio for increasing model order. (2) $Re(\lambda)<0$}
+    \caption{Stabilisation for the system with the physical parameters shown for model orders of up to 30, stability criteria used (1) tolerance of 0.2rad/s in natural frequency, and 0.02 in damping ratio for increasing model order. (2) $Re(\lambda)<0$}
     \label{fig:10-dof-stabilisation-clean}
 \end{figure}
 
-\begin{itemize}
-    \item Describe that this simulation was done using the equations from the whatever section.
-    \item Stabilisation plot.
-    \item Modeshape plot.
-    \item Compare both to theoretically calculated values.
-\end{itemize}
+Interpreting the stabilisation diagram, and selecting the most stable and suitable poles, the LSFD algorithm is used to estimate the modeshapes and reconstruct the FRF. The modeshapes for the 6$^{th}$ mode are showcased in Figure \ref{fig:modeshape-10dof-clean}, comparing the true modeshapes and the LSFD estimated ones.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figures/Modeshapes-10dof-clean.png}
+    \caption{Modeshape plot of 2 Mass-normalised modeshapes, true value and LSFD Estimate. Both vectors are normalised to have a maximum value of 1. plot generated using matplotlib \cite{matplotlib}.}
+    \label{fig:modeshape-10dof-clean}
+\end{figure}
+
+This plot gives a more qualitative impression for how closely the LSFD algorithm solution tracks the theoretical value. A more quantitative approach is using the \textit{Modal Assurance Criterion (MAC)} matrix, a statistical measure of correlation between 2 sets of modeshape vectors on the same space. The $(i,j)$ element of the MAC matrix, which quantifies how strongly the $i^{th}$ mode shape of one system aligns with the $j^{th}$ mode shape of another, is defined by:
+
+\begin{equation}
+        \mathbf{MAC}(\{\Psi_i\},\{\Psi_j\}) = \frac{|\{\Psi_i^H\} \{\Psi_j\}|^2}{(\{\Psi_i^H\}\{\Psi_i\})(\{\Psi_j^H\}\{\Psi_j\})}
+\end{equation}
+
+One can simply interpret this as the squared cosine angle between both vectors, being $1$ if they are collinear, or $0$ if perpendicular. This might also be interpreted as matrix of pairwise squared correlations, $R^2$, between the 2 sets of vectors. The MAC matrix correlating the LSFD solution to the modeshapes and the true value is seen in Figure \ref{fig:mac-10dof-clean}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Figures/MAC-10dof-clean.png}
+    \caption{Modal Assurance Criterion matrix (rounded to 3 decimal places), plot generated using matplotlib \cite{matplotlib}.}
+    \label{fig:mac-10dof-clean}
+\end{figure}
+
+Additionally, to gauge the inherent similarity among the true mode shapes themselves,  the autocorrelation MAC matrix is computed for the true modes (i.e. the MAC of the true shapes against themselves). This serves as a baseline when comparing the LSFD estimated vs. true using a MAC matrix. The autocorrelation MAC is shown in Figure \ref{fig:automac-10dof}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Figures/auto-mac-10dof-clean.png}
+    \caption{Autocorrelation MAC matrix for the analytically calculated modeshapes, plot generated using matplotlib \cite{matplotlib}.}
+    \label{fig:automac-10dof}
+\end{figure}
+
+% \begin{itemize}
+%     \item Describe that this simulation was done using the equations from the whatever section.
+%     \item Stabilisation plot.
+%     \item Modeshape plot.
+%     \item Compare both to theoretically calculated values.
+% \end{itemize}
 
 \subsection{Introducing noise into the measurements}
 
-\begin{itemize}
-    \item Introduce Gaussian (normal distribution) white noise into the system.
-    \item Again, stabilisation plot and modeshapes.
-    \item Compare both to theoretical values again.
-\end{itemize}
-
-\section{Experimentally tested structure}
-
-\begin{itemize}
-    \item Either use MEC444, or Hawk Data.
-    \item Showcase how quick it is idk.
-\end{itemize}
-
-\chapter{Discussion, and Potential Improvement}
-
-\begin{itemize}
-    \item Now that polymax is implemented, now do we publish.
-    \item A "beta" version can be published under the provision that there will be lots of improvement.
-    \item More modal analysis algorithms that are for specific cases etc.
-    \item Better user-friendliness/API/frontend.
-\end{itemize}
+In Modal Testing practice, it is common, sometimes standard, to use a white noise signal for the forced excitation, this subjects the tested structure to a broad range of frequencies. If the tested structure is linear and other test parameters aren't obstructive, one can consider the structure as a frequency shaping filter on the white noise input, emphasising the magnitude at the natural frequencies and appearing random or noisy at others. The existence of noise in the measurement chain stresses the need for algorithms performant with noisy data sets. To benchmark the robustness of the implemented pLSCF algorithm, a Gaussian noise spectrum is generated using pre-existing functions, Algorithm \ref{alg:gauss} showcases the process, the accelerance FRF is selected to resemble real measured data; typical dynamic data is measured by accelerometers. 
 
 
+\begin{algorithm}[caption={Pseudocode description of generating noisy measurements, by adding white noise described by the Signal-to-Noise ratio and a uniformly sampled phase},label={alg:gauss}]
+    $A \gets \text{calculated accelerance (complex FRF)}$ 
+    $\mathrm{SNR}_{\mathrm{dB}} \gets 25 \text{  (\emph{desired SNR in decibels})}$ 
+    
+    $\displaystyle r(\omega) \gets \frac{|A(\omega)|}{10^{\mathrm{SNR}_{\mathrm{dB}}/20}}
+    \quad\quad \triangleright \text{radius for each frequency bin}$ 
+    
+    $\displaystyle\phi(\omega) \; \overset{\mathrm{i.i.d.}}{\sim}\; \mathcal{U}(0,2\pi)
+    \quad\quad\;\;\;\;\;\;\;\; \triangleright \text{independent random phase}$ 
+    $\displaystyle W(\omega) \gets r(\omega)\,e^{j\phi(\omega)}
+    \quad\quad\quad\;\;\; \triangleright \text{complex noise on a circle of radius }r$ 
+    
+    $A_{\mathrm{noisy}} \gets A + W
+    \quad\quad\quad\quad\quad\quad\quad\;\;\;\; \triangleright \text{noise is added linearly}$ 
+\end{algorithm}
+
+A stabilisation diagram, Figure \ref{fig:noisy-stab-diag}, is constructed for 70 model orders. It is quickly apparent that the noise biases the algorithm towards non-dynamic modes, even with a liberal tolerance, leading to non-converging and unstable poles. A proposed solution to mitigate this unwanted deviation is segmenting the response function about each peak, and pass through the individual segments into the algorithm. This solution can be computationally quicker in some cases as the required model orders for each segment are typically lower. The stabilisation diagram from implementing the proposed solution is showcased in Figure \ref{fig:noisy-stab-diag-split-all}, and due to the large number of poles this solution produces, Figure \ref{fig:noisy-stab-diag-split-no-unstable} provides visual clarity by omitting the unstable poles from the diagram.
+%While the addition of noise biases the least-squares model towards non-existent modes, the stability assessment filters them out. Even with an extremely high level of noise present in the higher frequencies, the algorithm is able to converge on the true physical poles, this is likely attributed to the frequency dependent weighing, as well as the polyreference nature of the algorithm.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/10-dof-noisy-stabilisation.png}
+    \caption{Accelerance FRF plot, and stabilisation plot for a maximum model order of 70, with frequency tolerance of 0.4, and damping tolerance of 0.05}
+    \label{fig:noisy-stab-diag}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/10-dof-noisy-stabilisation-split.png}
+    \caption{Accelerance FRF plot, and stabilisation plot for a maximum model order of 50, using the proposed segmentation method, with frequency tolerance of 0.05 and damping tolerance of 0.01}
+    \label{fig:noisy-stab-diag-split-all}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Figures/10-dof-noisy-stabilisation-split-no-unstable.png}
+    \caption{Accelerance FRF plot, and stabilisation plot for a maximum model order of 50, using the proposed segmentation method, with unstable poles omitted}
+    \label{fig:noisy-stab-diag-split-no-unstable}
+\end{figure}
+
+\section{Model Order Reduction: Technique Comparison}
+In practice, a practitioner would rarely re-run the identification algorithm for every candidate model order; Instead, they first obtain a higher model order, and reduce it using various methods to the desired orders. This section showcases benchmarks for two separate model reduction schemes, SVD based reduction, and direct matrix truncation, against the baseline  "brute-force" loop that recomputes each order from scratch.
+
+For a square matrix $\mathbf{A}=\mathbf{U\Sigma V^T}\in \mathbb{R}^{n\times n}$ with rank$-n$, SVD based reduction aims to find the rank$-k$ realization of $A$ through eliminating the $n-k$ lowest valued singular values, and their corresponding singular vectors. Hence a rank$-k$ reduced matrix $A_k = \mathbf{U_k\Sigma_k V_k^T}$, where $\mathbf{U_k} \in \mathbb{R}^{n \times k}$, $\mathbf{V_k} \in \mathbb{R}^{n \times k}$, and $\mathbf{\Sigma_k} \in \mathbb{R}^{k}$. For the same square matrix $\mathbf{A}$, direct truncation takes the $\mathbb{R}^{k\times k}$ square and leaves out the rest. Applying these schemes to pLSCF, the appropriate matrix to reduce is the design matrix of the least-squares problem $\mathbf{M}$ (See Equation \ref{eq:reduced_normal_eqn}). To benchmark the speed of each method, three maximum model orders are chosen, 10, 20, and 100, each scheme would calculate all the model orders between 1 and the maximum one. Table  \ref{table:mor_speed} showcases the different runtimes. While Tables  \ref{table:accuracy_wns} and \ref{table:accuracy_zns} showcase the accuracy for a simulated 2-DOF oscillator using different model order reduction/realisation methods. All these methods are available to the user for a preference in their analyses. 
 
 
-% \pagebreak
-% Consider the Jacobian matrix, for a system with $n_{outputs} = 3$:
-% \begin{equation}
-%     J = \begin{pmatrix}
-%         X_1 & 0 & 0 & Y_1\\
-%         0 & X_2& 0 & Y_2\\
-%         0 & 0 & X_3 & Y_3
-%     \end{pmatrix}    
-% \end{equation}
-
-% \begin{equation}
-%     J^HJ = \begin{pmatrix}
-%         X_{1}^HX_1 & 0 & 0 & X_{1}^HY_1\\
-%         0 & X_{2}^HX_2 & 0 & X_{1}^HY_2\\
-%         0 & 0 & X_{2}^HX_2 & X_{1}^HY_3\\
-%         X_{1}^*Y_{1}^T & X_{2}^*Y_{2}^T & X_{3}^*Y_{3}^T & Y_{1}^HY_1+Y_{2}^HY_2+Y_{3}^HY_3\\
-%     \end{pmatrix}
-% \end{equation}
-% if:
-% $$    R_o = Re(X_{o}^HX_o) $$
-% $$    S_o = Re(X_{o}^HY_o)$$
-% $$    T_o = Re(Y_{o}^HY_o)$$
-% \begin{equation}
-%     2Re(J^HJ)\theta = 2Re\begin{pmatrix}
-%         X_{1}^HX_1 & 0 & 0 & X_{1}^HY_1\\
-%         0 & X_{2}^HX_2 & 0 & X_{1}^HY_2\\
-%         0 & 0 & X_{2}^HX_2 & X_{1}^HY_3\\
-%         X_{1}^*Y_{1}^T & X_{2}^*Y_{2}^T & X_{3}^*Y_{3}^T & Y_{1}^HY_1+Y_{2}^HY_2+Y_{3}^HY_3\\
-%     \end{pmatrix}
-%     \begin{pmatrix}
-%         \beta_1\\
-%         \beta_2\\
-%         \beta_3\\
-%         \alpha
-%     \end{pmatrix} 
-% \end{equation}
-% \begin{equation}
-%     = 
-%     2 \begin{pmatrix}
-%         R_1\beta_1+S_1\alpha\\
-%         R_2\beta_2+S_2\alpha\\
-%         R_3\beta_3+S_3\alpha\\
-%         S_{1}^T\beta_1+S_{2}^T\beta_2+S_{3}^T\beta_3 +(T_1+T_2+T_3)\alpha 
-%     \end{pmatrix}
-% \end{equation}
-
-% which corresponds to the solutions in the normal equations in terms of alpha and beta.
+\begin{table}[H]
+    \centering
+    \caption{Speed test of MOR techniques at various reduced model orders.}
+    \label{table:mor_speed}
+    \begin{tabular}{l r r r}
+        \toprule
+        Method & Order 10 (s) & Order 20 (s) & Order 100 (s) \\ \midrule
+        Direct truncation          &   0.008327 &   0.009515 & 10.648412 \\
+        SVD-based rank reduction   &   0.006160 &   0.017249 & 36.642554 \\
+        Brute force    &  0.052435 &   0.101725 & 49.564672 \\ \bottomrule
+    \end{tabular}
+\end{table}
 
 
-% \begin{equation}
-%     l^{LS}(\theta) = tr\{\theta^TRe(J^HJ)\theta\}
-% \end{equation}
 
-% from vector calculus, if
-% \begin{equation}
-%     \mathbf{f}= \mathbf{x^TBx}
-% \end{equation}
-% then,
-% \begin{equation}
-%     \frac{\partial \mathbf{f}}{\partial \mathbf{x}} = 2\mathbf{Bx}
-% \end{equation}
 
-% then the normal equation for polymax should be:
-% \begin{equation}
-%     \frac{\partial l^{LS}}{\partial \theta} = 2Re(J^HJ)\theta
-% \end{equation}
+\begin{table}[h]
+    \centering
+    \caption{Natural Frequency accuracy components for each MOR technique.}
+    \begin{tabular}{l r r}
+        \toprule
+        Method                      & $\omega_1$    & $\omega_2$    \\ \midrule
+        Truncation                  & 0.87172796     & 0.50329227     \\
+        SVD-based rank reduction    & 0.87172831     & 0.50329231     \\
+        Brute force                 & 0.87173224     & 0.50329240     \\
+        Actual                      & 0.87172752  & 0.50329212          \\ \bottomrule
+    \end{tabular}
+    
+    \label{table:accuracy_wns}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \caption{Damping ratio accuracy components for each MOR technique.}
+    \begin{tabular}{l r r}
+        \toprule
+        Method                      & $\zeta_1$    & $\zeta_2$   \\ \midrule
+        Truncation                  & 0.05476992     & 0.03162261     \\
+        SVD-based rank reduction    & 0.05477160     & 0.03162370     \\
+        Brute force                 & 0.05477117     & 0.03162255     \\
+        Actual                      & 0.05477226  & 0.03162278         \\ \bottomrule
+    \end{tabular}
+    
+    \label{table:accuracy_zns}
+\end{table}
+
+
+% \begin{itemize}
+%     \item Quickly go over the truncation techniqes.
+%     \item Show the speed test for different MOR techniques.
+%     \item Show the MAC for different MOR techniques.
+% \end{itemize}
+
+
+\chapter{Discussion, and Further Work}
+
+This project set out to (a) gain an implementable understanding of the pLSCF modal parameter estimation method (b) integrate the algorithm, together with a supplementary LSFD routine, into an open-source Python library, (c) verify their numerical behaviour and performance and (d) improve the overall usability of the software. 
+
+
+\section{Accuracy of pLSCF and LSFD}
+The stability diagram for the \emph{clean} FRF data showed quick convergence of the poles on the true natural frequencies. The pLSCF algorithm employs a weighted least-squares regression that emphasizes where the variance is lowest for each output i.e. the FRF troughs, this  ''down-weighing” of the spectral lines where the peaks lie creates a large error when a pole is misplaced, causing the LS solution converge remarkably quickly. In fact, for the simulated 10-DOF system, it reached its first stable solution at a model order of 3, despite the actual system containing 10 modes. Stability was assessed using predefined tolerances on the maximum deviation for both natural frequencies and damping ratios, and the model of order 3 not only fulfilled these criteria but did so with a maximum deviation from the theoretical values of just $~8.8 * 10^{-5} \%$. Table \ref{tab:pole_comparison} shows a full comparison of the true poles and pLSCF estimates.
+
+\begin{table}[h]
+    \centering
+    \caption{Comparison of pLSCF and true poles (imaginary parts $<0$ shown). Percentage difference between the poles is highlighted with a $10^5$ scaling factor (So first percentage difference is $0.00005504 \%$)}
+    \begin{tabular}{c c c c}
+        \toprule
+        No. & pLSCF pole & True pole & $\Delta\% (\times10^{-5})$ \\ 
+        \midrule
+        1  & $-0.003818 - 27.583987\,i$ & $-0.003804 - 27.583994\,i$ & 5.504 \\
+        2  & $-0.015049 - 54.925932\,i$ & $-0.015084 - 54.925965\,i$ & 8.831 \\
+        3  & $-0.024417 - 69.887393\,i$ & $-0.024421 - 69.887393\,i$ & 0.561 \\
+        4  & $-0.063769 -112.954553\,i$ & $-0.063794 -112.954549\,i$ & 2.250 \\
+        5  & $-0.110767 -148.843795\,i$ & $-0.110772 -148.843808\,i$ & 0.937 \\
+        6  & $-0.145576 -170.624492\,i$ & $-0.145564 -170.624491\,i$ & 0.742 \\
+        7  & $-0.158286 -177.918991\,i$ & $-0.158276 -177.918990\,i$ & 0.589 \\
+        8  & $-0.220284 -209.891063\,i$ & $-0.220272 -209.891056\,i$ & 0.665 \\
+        9  & $-0.334599 -258.689376\,i$ & $-0.334602 -258.689377\,i$ & 0.114 \\
+        10 & $-0.344212 -262.390535\,i$ & $-0.344245 -262.390541\,i$ & 1.251 \\ 
+        \bottomrule
+    \end{tabular}
+    \label{tab:pole_comparison}
+\end{table}
+
+Having established a stable and accurate set of poles using pLSCF, the Least Squares Frequency Domain (LSFD) algorithm was utilised to recover the modeshapes. Using the poles and their corresponding participation factors (the eigenvectors of the companion matrix, \ref{eq:polymax-solution}) as inputs to the LSFD algorithm, the full modeshape matrix was recovered in one least-squares step. The quality of the estimated modeshapes was examined using the Modal Assurance Criterion (MAC). The diagonal of the cross-correlation MAC matrix between the LSFD estimated modeshapes and the true modeshapes has a minimum value of $0.997$ as seen in Figure \ref{fig:mac-10dof-clean}. Such values are typically interpreted as "identical modeshape" in Modal Analysis. To ensure that the high MAC values reflected genuine physical correspondence rather than a coincidental numerical match, an additional check was performed: the previous cross-correlation MAC was compared against the autocorrelation MAC, Figure \ref{fig:automac-10dof}, of the true modeshapes themselves. The two matrices are indistinguishable to two significant figures, this implies that the LSFD estimated modeshapes retain the inherent dynamic content as well as the orthogonality properties of the system. If one were to substitute the analytically calculated modeshapes with the estimated ones in other tasks, it would cause trivial, if any, modelling error.  Overall, the pLSCF-LSFD process, produces highly accurate poles and mode shapes, for an \emph{ideal} data set. 
+
+
+When uniformly sampled white noise is added to the response, pLSCF struggles to converge on the system modes, even when generous tolerances for natural frequency and damping are applied, and the model order is deliberately over-fitted (see Figure \ref{fig:noisy-stab-diag}). The difficulty arises because noise creates spurious, peak-like features in the FRF that bias the least-squares fit.
+
+To mitigate this, the FRF is first segmented around each true resonance. Peak locations are detected from the summation function (the sum of all FRFs) whose genuine modes are prominent. Modal identification is then carried out on each segment separately, restoring the expected convergence even with tight tolerances and lower model orders, as illustrated in Figures \ref{fig:noisy-stab-diag-split-all} and \ref{fig:noisy-stab-diag-split-no-unstable}.
+
+A trade-off is that different modes may now stabilise at different model orders; for example, in Figure \ref{fig:noisy-stab-diag-split-no-unstable} the third mode converges at a lower order than the ninth. Ideally, each mode would be assigned the model order at which it first stabilises, but the current software does not automate this choice. The user must therefore inspect the stability diagram, select the appropriate poles manually, and extract them from their respective data containers. This may seem trivial or a minor inconvenience, but choosing the wrong order for even one mode can propagate significant errors into the modal parameters and distort any subsequent analyses.
+
+
+\section{Future Implementations}
+
+Future work will first focus on incorporating modeshape convergence into the stability assessment. Coupling the existing pLSCF pole estimator with the LSFD modeshape estimator will enable a MAC-based stability criterion, allowing convergence to be judged not only by natural frequencies and damping ratios, but also by modal orthogonality. Once this methodological link is in place, development will turn to usability: it has been highlighted that the pole selection procedure performed by the user could benefit from a dedicated graphical interface for interactivity. With these foundations established, the backend engine will be broadened to include PolyMAX Plus, a version of pLSCF which is better suited for handling noisy responses. The software will then be released under an open-source licence to encourage external validation and community-driven improvement. Finally, a wider contributor base will facilitate the integration of additional, application-specific identification and modal analysis algorithms, extending the library's applicability to increasingly challenging scenarios.
+
+
+
+% \textbf{Future Work}
+% \begin{itemize}
+%     \item Science future work:
+%     \begin{itemize}
+%         \item Publishing, open-source will invite community contribution. Which is helpful sometimes.
+%         \item Stability with MAC. it is common to use MAC/modeshapes converging, but that would require further implementation of LSFD with pLSCF, which is not yet bridged.
+%         \item More algorithms, i.e. PolyMAX plus, more system-id stuff I guess.
+%         \item more modal analysis algo's for specific cases.
+%     \end{itemize}
+%     \item Accessibility future work:
+%     \begin{itemize}
+%         \item Choosing poles directly. That would require a more   ''app like interface ig ''
+%         \item Making a user friendly API layer. 
+%     \end{itemize}
+% \end{itemize}
+
+\section{Concluding Remarks}
+
+This project delivers a fully tested Python implementation of the polyreference LSCF algorithm and its LSFD mode shape estimator. On a ten-DOF benchmark it reached stable poles at model order 3 with errors below 
+$9 * 10^{-5}\%$ while the ensuing mode shapes matched the analytical set with $MAC \geq 0.997$. A simple peak-segmentation step restored these accuracies under strong white-noise contamination, and speed trials showed that SVD-based or truncation-based model-order reduction is up to 100 $\times$ faster than brute-force recalculation without loss of fidelity.
+
+Future development will focus on integrating modeshape information into the stability test so that MAC convergence is assessed alongside frequency and damping, while a graphical, click-to-select interface will make pole selection intuitive and robust. The backend will be extended with PolyMAX Plus to handle noisier data sets, and once these foundations are in place the entire codebase will be released under a permissive open-source licence, inviting peer review and accelerating community-driven enhancements.

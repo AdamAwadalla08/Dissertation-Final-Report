@@ -1,11 +1,92 @@
 \appendix
-\chapter{Damped Multi-degree-of-freedom systems}
-
-
-\section{Free Vibration Solution}
+\chapter{Multi-degree-of-freedom systems}
 
 \section{Forced Vibration Solution}\label{sec:damped-mdof-frf}
+\label{sec:frfappendix}
+The following is the author's interpretation and summary of the work by Fu in \cite{fu2001modal}, Ewins in \cite{ewins2000modal}, and Rogers in \cite{Tim_FRF} and \cite{Tim_Modal_Properties2}
+As previously highlighted in Section \ref{sec:intro}, the solution to a dynamic system can be represented by an eigenvalue problem:
+\begin{equation}
+    (\textbf{K}-\omega^{2}\textbf{M})\{\varphi\} = 0
+    \label{eigen_new}
+\end{equation}
+Considering 2 modes, $i$ and $j$, equation \ref{eigen_new} becomes:
 
+\begin{equation}
+    (\textbf{K}-\omega^{2}_{i}\textbf{M})\{\varphi\}_{i} = 0
+    \label{mode_i}
+\end{equation}
+\begin{center}
+    and
+\end{center}
+
+\begin{equation}
+    (\textbf{K}-\omega^{2}_{j}\textbf{M})\{\varphi\}_{j} = 0
+    \label{mode_j}
+\end{equation}
+
+Pre-multiplying \ref{mode_i} by $\{\varphi\}_{j}^{T} $, and Transposing \ref{mode_j} and post-multiplying by $\{\varphi\}_{i}$ results in:
+\begin{equation}
+    \{\varphi\}_{j}^{T}(\textbf{K}-\omega^{2}_{i}\textbf{M})\{\varphi\}_{i} = 0
+    \label{zeby1}
+\end{equation}
+\begin{center}
+    and
+\end{center}
+\begin{equation}
+    \{\varphi\}_{j}^{T}(\textbf{K}-\omega^{2}_{j}\textbf{M})\{\varphi\}_{i} = 0
+    \label{zeby2}
+\end{equation}
+subtracting  \ref{zeby1} and \ref{zeby2}:
+
+\begin{equation}
+    (\omega^{2}_{i} -\omega^{2}_{j})\{\varphi\}_{j}^{T} \textbf{M} \{\varphi\}_{i} = 0
+    \label{zeby3}
+\end{equation}
+suggesting that for $i \neq j$,  $\{\varphi\}_{j}^{T} \textbf{M} \{\varphi\}_{i} = 0$, substituting this property in equation \ref{zeby2}, $\{\varphi\}_{j}^{T} \textbf{K} \{\varphi\}_{i} = 0$ holds true.
+Considering the case where $i = j$, let 
+\begin{equation}
+    \{\varphi\}_{i}^{T} \textbf{M} \{\varphi\}_{i} = m_{i} 
+    \label{massmodal} 
+\end{equation}
+\begin{center}
+    and
+\end{center}
+\begin{equation} 
+    \{\varphi\}_{i}^{T} \textbf{K} \{\varphi\}_{i} = k_{i} 
+    \label{modal_stiffness} 
+\end{equation}
+where $m_{i}$ and $k_{i}$ are the modal mass and stiffness respectively, the eigenvalue for each mode $\lambda_{i}$ can be represented as:
+$$\lambda_{i} = \frac{k_{i}}{m_{i}}$$.
+The properties highlighted by  equations \ref{zeby1}, \ref{zeby2}, \ref{zeby3}, \ref{massmodal} and \ref{modal_stiffness} are expressed in matrix form more concisely, where:
+\begin{equation}
+    [\Phi]^{T}\textbf{M} [\Phi] = \text{diag}(m_{i})
+    \label{modal_matrix_mass}
+\end{equation}
+\begin{center}
+    and
+\end{center}
+\begin{equation}
+    [\Phi]^{T}\textbf{K} [\Phi] = \text{diag}(k_{i})
+    \label{modal_matrix_stiff}
+\end{equation}
+Referring to the mathematical representation of the frequency response function, from equation \ref{FRF_general_form}, where $H(\omega) =  (\textbf{K}-\omega^{2}\textbf{M})^{-1}$, 
+one can express the FRF of a system in terms of its modal parameters as follows,
+\begin{equation}
+    [\Phi]^{T} (\textbf{K}-\omega^{2}\textbf{M})[\Phi] =  [\Phi]^{T} [H(\omega)]^{-1} [\Phi]
+\end{equation}
+Substituting from \ref{modal_matrix_mass} and \ref{modal_matrix_stiff}, the FRF matrix is expressed as:
+\begin{equation}
+    [H(\omega)] = [\Phi][\omega_{i}^{2}-\omega^{2}][\Phi]^{T}
+\end{equation}
+For a single element in a receptance FRF matrix $H_{oj}(\omega)$, the equation representing it is:
+\begin{equation}
+    H_{jk}(\omega) = \frac{\varphi_{j1}\varphi_{k1}}{\omega_{1}^{2}-\omega^{2}} + \frac{\varphi_{j2}\varphi_{k2}}{\omega_{2}^{2}-\omega^{2}} + \dots + \frac{\varphi_{jn}\varphi_{kn}}{\omega_{n}^{2}-\omega^{2}}
+    \label{FRF_MODAL}
+\end{equation}
+where $n$ is the number of modes. Equation \ref{FRF_MODAL} indicates that the value of the FRF at a single frequency line can be interpreted as 
+the contribution of all individual modes to the specific vibration pattern associated with the frequency line. Essentially the FRF is represented as a sum of partial fractions.
+This representation of the FRF is the basis of the validity of the pLSCF method, 
+as it similarly assumes a rational fractional representation of the FRF.
 
 
 \chapter{Derivation of p-LSCF modal parameter estimation method}\label{sec:POLYMAX-DERIVATION}
@@ -176,13 +257,13 @@ Where the Gramian matrix of $\mathbf{J}$ can be represented in terms a set of va
     \end{pmatrix}
 \end{equation}
 in which:
-\begin{equation}
+\begin{equation}\label{eq:r-tensor}
     R_o = \mathit{Re}(X^{H}_o X_o)
 \end{equation}
-\begin{equation}
+\begin{equation}\label{eq:s-tensor}
     S_o =\mathit{Re}(X^{H}_o Y_o)
 \end{equation}
-\begin{equation}
+\begin{equation}\label{eq:t-tensor}
     T_o = \mathit{Re}(Y^{H}_o Y_o)
 \end{equation}
 
@@ -261,9 +342,55 @@ A property of the companion matrix $C(p)\in \mathbb{R}^{n\times n}$ is that its 
 \begin{equation}
     C(\mathbf{D})[\mathbf{L}] = \Lambda[\mathbf{L}]
 \end{equation}
-Where the matrix $[\mathbf{L}]$ is the Eigenmatrix (matrix with columns as eigenvectors), representing the modal participation factors of each mode, and the matrix $\Lambda$ contains the discrete time poles on its diagonal elements. The transpose of a companion matrix, this however does not affect the numerical value of the poles or participation factors [reference proof]. A $p$-order right matrix-fraction polynomial estimation should yield $pN_{in}$ number of poles.
+Where the matrix $[\mathbf{L}]$ is the Eigenmatrix (matrix with columns as eigenvectors), representing the modal participation factors of each mode, and the matrix $\Lambda$ contains the discrete time poles on its diagonal elements. The transpose of a companion matrix is used for pLSCF, this however does not affect the numerical value of the poles or participation factors [reference proof]. A $p$-order right matrix-fraction polynomial estimation should yield $pN_{in}$ number of poles.
 
 \section{Finding the modeshapes using the Least-Squares Frequency Domain (LSFD) method}
 
+In practice, modeshapes are estimated using the Least Squares Frequency Domain algorithm, which is a linear regression designed to find the modal residues, a product of the modeshapes and the participation factors, and the upper and lower residuals, values which account for non-ideal vibratory behaviour. The LSFD fits a new model to measured FRF data as shown in Equation \ref{eq:lsfd-model}.
 
-This part should be in actual report: When fitting theoretical models to experimental data, the difficulty does not typically lie in the mathematical framework enabling the modelling process. Instead, the challenge is in constructing a model that provides physically meaningful insights. Given that the goal of many modal parameter estimation methods is to find a set of poles which As apparent, it is straightforward to find the polynomial coefficients using measured data. 
+\begin{equation}\label{eq:lsfd-model}
+    H(s) = \sum_{m=1}^{N_{modes}}\left( \frac{\Psi_m\cdot L_{m}^{T}}{s - \lambda_m}+\frac{\Psi_{m}^{*}\cdot L_{m}^{H}}{s - \lambda_{m}^{*}} \right) +\frac{\mathbf{LR}}{s^2} + \mathbf{UR}
+\end{equation}
+Where $\Psi_m$ is the modeshape vector for the mode $m$, $L_{m}$ is the mode's participation factor, $\mathbf{LR}$ and $\mathbf{UR}$ are the upper and lower residuals, and $s = j\omega$. By taking the Modal Residues for the $i^{th}$ mode $[Res_i] = \Psi_m\cdot L_{m}^{T}$, they can be found, alongside the Upper and Lower residuals, in one single linear least squares step. By taking the Jacobian matrix $J$ to be
+\begin{equation}
+    J = \begin{bmatrix}
+        \frac{1}{j\omega_2 - \lambda_1} + \frac{1}{j\omega_2 - \lambda_1^*} & \frac{1}{j\omega_2 - \lambda_2} + \frac{1}{j\omega_2 - \lambda_2^*} & \dots & \frac{1}{j\omega_2 - \lambda_{N_{m}}} + \frac{1}{j\omega_2 - \lambda_{N_{m}}^*} & \frac{-1}{\omega_2^2} & 1 \\
+
+        \frac{1}{j\omega_3 - \lambda_1} + \frac{1}{j\omega_3 - \lambda_1^*} & \frac{1}{j\omega_3 - \lambda_2} + \frac{1}{j\omega_3 - \lambda_2^*} & \dots & \frac{1}{j\omega_3 - \lambda_{N_{m}}} + \frac{1}{j\omega_3 - \lambda_{N_{m}}^*} & \frac{-1}{\omega_2^2} & 1 \\
+
+        \dots & \dots & \dots & \vdots  & \dots &\vdots \\
+
+        \frac{1}{j\omega_{N_{f}} - \lambda_1} + \frac{1}{j\omega_{N_{f}} - \lambda_1^*} & \frac{1}{j\omega_{N_{f}} - \lambda_2} + \frac{1}{j\omega_{N_{f}} - \lambda_2^*} & \dots & \frac{1}{j\omega_{N_{f}} - \lambda_{N_{m}}} + \frac{1}{j\omega_{N_{f}} - \lambda_{N_{m}}^*} & \frac{-1}{\omega_{N_{f}}^2} & 1 \\
+    \end{bmatrix}
+\end{equation}
+
+The residues and the upper and lower residuals can be estimated as:
+
+\begin{equation}
+    \begin{bmatrix}
+        Re[Res]_{1o}\\
+        \dots\\
+        Re[Res]_{N_mo}\\
+        Im[Res]_{1o}\\
+        \dots\\
+        Im[Res]_{N_mo}\\
+        [LR]_o\\
+        [UR]_o
+    \end{bmatrix}
+    = Re(J^H J)^{-1} Re(J^H H_o)
+    \forall O = 1,2,3,\dots , N_{out}
+\end{equation}
+
+With no knowledge of the modal participation factors, the modeshape can only be estimated using a singular value decomposition (SVD) of the residue matrix.
+\begin{equation}
+    [Res_i] = \mathbf{U\Sigma V^T}
+\end{equation}
+Where $\mathbf{\Sigma}$ is a diagonal matrix containing the singular values of the matrix, $\mathbf{U}$ is a matrix containing left singular vectors, and $\mathbf{V}$ is a matrix containing right singular vectors. This process can yield accurate modeshapes only if the residue matrix is a rank-1, which mat not always be the case. Knowledge of the modal participation factors, which the pLSCF algorithm provides, removes this limitation by allowing a vector to be calculated using the properties of the outer product and rearranging. The use of the outer product provides quicker computation, as matrix-vector multiplication is generally considered quicker than the SVD, this is particularly important for the frequently encountered, high number of output systems.
+\begin{equation}
+    \mathbf{\Psi}_i = \frac{[Res_i] \mathbf{L}_i}{\mathbf{L}_i^H \mathbf{L}_i}
+\end{equation}
+
+
+
+
+% This part should be in actual report: When fitting theoretical models to experimental data, the difficulty does not typically lie in the mathematical framework enabling the modelling process. Instead, the challenge is in constructing a model that provides physically meaningful insights. Given that the goal of many modal parameter estimation methods is to find a set of poles which As apparent, it is straightforward to find the polynomial coefficients using measured data. 
